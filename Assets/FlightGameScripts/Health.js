@@ -25,3 +25,4 @@ function OnCollisionEnter (theCrash : Collision) {
 function Dead () {
 	Destroy(gameObject);
 }
+//code
