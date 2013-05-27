@@ -25,9 +25,9 @@ function OnCollisionEnter (theCrash : Collision) {
 
 function Dead () {
 	Instantiate(explosion, transform.position, transform.rotation);
-	gameObject.GetComponent(Movement).enabled = false;
 	GameObject.Find("ControlHub").GetComponent(FadeOut).enabled = true;
 	GameObject.Find("ControlHub").GetComponent(GUIHandler).enabled = false;
+	gameObject.GetComponent(Movement).enabled = false;
 	gameObject.GetComponent(Health).enabled = false;
 }
 //code
