@@ -2,6 +2,7 @@
 
 var health : float;
 var displayHealth : int;
+var explosion : GameObject;
 
 function Start () {
 	var health = 100;
@@ -23,6 +24,10 @@ function OnCollisionEnter (theCrash : Collision) {
 }
 
 function Dead () {
-	Destroy(gameObject);
+	Instantiate(explosion, transform.position, transform.rotation);
+	gameObject.GetComponent(Movement).enabled = false;
+	GameObject.Find("ControlHub").GetComponent(FadeOut).enabled = true;
+	GameObject.Find("ControlHub").GetComponent(GUIHandler).enabled = false;
+	gameObject.GetComponent(Health).enabled = false;
 }
 //code
