@@ -1,8 +1,8 @@
 HelicopterGame
 ==============
-Developed by Corbin and Aaron
-Status: In Production
-Contact:
-  Corbin @ corbin.mc96@gmail.com
-  Aaron @ N/A 
+Developed by Corbin and Aaron\n
+Status: In Production\n
+Contact:\n
+  Corbin @ corbin.mc96@gmail.com\n
+  Aaron @ N/A\n
  
