@@ -49,7 +49,6 @@
      <Compile Include="Assets\FlightGameScripts\Ball.js" />
      <Compile Include="Assets\FlightGameScripts\Bullet.js" />
      <Compile Include="Assets\FlightGameScripts\BulletDamage.js" />
-     <Compile Include="Assets\FlightGameScripts\Crosshair.js" />
      <Compile Include="Assets\FlightGameScripts\EnemyHealth.js" />
      <Compile Include="Assets\FlightGameScripts\FadeIn.js" />
      <Compile Include="Assets\FlightGameScripts\FadeOut.js" />

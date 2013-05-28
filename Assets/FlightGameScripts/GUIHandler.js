@@ -29,6 +29,7 @@ function Update () {
 }
 
 function OnGUI () {
+	GUI.depth = 1;
     //crosshair
     GUI.DrawTexture(imageArea,crossImage);
     
