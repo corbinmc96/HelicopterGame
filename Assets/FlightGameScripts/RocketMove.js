@@ -5,7 +5,6 @@ var explosion : GameObject;
 var helicopterName : String;
 private var mainCamera : GameObject;
 private var launchTime : float;
-private var lookPoint : Vector3;
 
 function Start () {
 	mainCamera = GameObject.Find(helicopterName + "/Main Camera");

@@ -15,6 +15,6 @@ function Update () {
 			Time.timeScale=1;
 		} if (Time.timeScale==1) {
 			Time.timeScale=0;
-		} 
+		}
 	}
 }
