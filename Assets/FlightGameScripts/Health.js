@@ -24,6 +24,15 @@ function OnCollisionEnter (theCrash : Collision) {
 }
 
 function Dead () {
+	for (var child:Transform in transform) {
+		if (child.name != "Main Camera" && child.name != "Target Point") {
+			child.gameObject.AddComponent("Rigidbody");
+			child.gameObject.rigidbody.useGravity = true;
+			child.gameObject.rigidbody.isKinematic = false;
+			child.gameObject.AddComponent("SphereCollider");
+		}
+	}
+	transform.DetachChildren();
 	Instantiate(explosion, transform.position, transform.rotation);
 	GameObject.Find("ControlHub").GetComponent(FadeOut).enabled = true;
 	GameObject.Find("ControlHub").GetComponent(GUIHandler).enabled = false;
