@@ -29,7 +29,10 @@ function Dead () {
 			child.gameObject.AddComponent("Rigidbody");
 			child.gameObject.rigidbody.useGravity = true;
 			child.gameObject.rigidbody.isKinematic = false;
+			child.gameObject.rigidbody.drag = 2;
+			child.gameObject.rigidbody.angularDrag = 1;
 			child.gameObject.AddComponent("SphereCollider");
+			child.gameObject.GetComponent(SphereCollider).radius *= 0.1;
 		}
 	}
 	transform.DetachChildren();
