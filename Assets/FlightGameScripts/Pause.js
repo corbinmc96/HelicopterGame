@@ -9,12 +9,12 @@ function Start () {
 }
 
 function Update () {
-	if (Input.GetAxis("Start")==1) {
+	if (Input.GetAxisRaw("Start")==1) {
 		isPaused = !isPaused;
 		if (Time.timeScale==0) {
 			Time.timeScale=1;
 		} if (Time.timeScale==1) {
 			Time.timeScale=0;
-		}
+		} while (Input.GetAxisRaw("Start")==1) {}
 	}
 }
