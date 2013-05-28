@@ -18,7 +18,7 @@ function Update () {
 		
 		// If reach to my range, Destroy. 
 		if(dist >= range) {
-			Instantiate(ExploPtcl, transform.position, transform.rotation);
+			//Instantiate(ExploPtcl, transform.position, transform.rotation);
 			Destroy(gameObject);
 		}
 	}
