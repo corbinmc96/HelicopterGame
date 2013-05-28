@@ -14,7 +14,6 @@ function Start () {
 }
 
 function Update () {
-	if (!Pause.isPaused) {
 	LookSpeed= initialLookSpeed*mainCamera.camera.fieldOfView/60;
 	if (Input.GetAxis("X")) {
 		burst = 3;
@@ -24,11 +23,11 @@ function Update () {
 	}
 	var noRiseVector = transform.forward;
 	noRiseVector.y = 0;
-	transform.Translate(Vector3.up * Input.GetAxis("Triggers") * ElevationSpeed * burst , Space.World);
-	transform.Translate(Vector3.right * Input.GetAxis("Left X") * MoveSpeed * burst);
-	transform.Translate(noRiseVector * Input.GetAxis("Left Y") * MoveSpeed * burst , Space.World);
-	transform.Rotate(Vector3.up * Input.GetAxis("Right X") * LookSpeed);
-	transform.Rotate(Vector3.right * Input.GetAxis("Right Y") * LookSpeed);	
+	transform.Translate(Vector3.up * Input.GetAxis("Triggers") * ElevationSpeed * burst * Time.deltaTime, Space.World);
+	transform.Translate(Vector3.right * Input.GetAxis("Left X") * MoveSpeed * burst * Time.deltaTime);
+	transform.Translate(noRiseVector * Input.GetAxis("Left Y") * MoveSpeed * burst * Time.deltaTime, Space.World);
+	transform.Rotate(Vector3.up * Input.GetAxis("Right X") * LookSpeed * Time.deltaTime);
+	transform.Rotate(Vector3.right * Input.GetAxis("Right Y") * LookSpeed * Time.deltaTime);	
 	transform.eulerAngles.z = 0;
 	if (transform.eulerAngles.x > MaxTilt && transform.eulerAngles.x < 340 - MaxTilt) {
 		transform.eulerAngles.x = MaxTilt;
@@ -60,7 +59,7 @@ function Update () {
 	//if (Input.GetAxis("Down") == 1) {
 		//transform.eulerAngles.x = 360-MaxTilt;
 	//}
-}}
+}
 
 function OnCollisionEnter (myCollision : Collision) {
 }

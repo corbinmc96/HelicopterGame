@@ -13,9 +13,8 @@ function Start () {
 }
 
 function Update () {
-	if (!Pause.isPaused) {
 	roto1.transform.Rotate(0,-700*Time.deltaTime,0);
 	roto2.transform.Rotate(0,-700*Time.deltaTime,0);
 	backroto1.transform.Rotate(-700*Time.deltaTime,0,0);
 	backroto2.transform.Rotate(-700*Time.deltaTime,0,0);
-}}
+}

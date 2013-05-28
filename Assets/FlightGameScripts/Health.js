@@ -9,11 +9,9 @@ function Start () {
 }
 
 function Update () {
-	if (!Pause.isPaused) {
-		var displayHealth = Mathf.Ceil(health);
-		if (health <= 0) {
-			Dead();
-		}
+	var displayHealth = Mathf.Ceil(health);
+	if (health <= 0) {
+		Dead();
 	}
 }
 

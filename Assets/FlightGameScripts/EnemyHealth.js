@@ -12,12 +12,11 @@ function Start () {
 }
 
 function Update () {
-	if (!Pause.isPaused) {
-		if (health <= 0) {
-			Dead();
-		}
+	if (health <= 0) {
+		Dead();
 	}
 }
+
 
 function Dead () {
 	// add to number of tanks destroyed

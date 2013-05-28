@@ -11,7 +11,6 @@ function Start () {
 }
 
 function Update () {
-	if (!Pause.isPaused) {
 	if (Input.GetAxis("Up")) {
 		camera.fieldOfView -= 20*Time.deltaTime;
 	}
@@ -32,4 +31,4 @@ function Update () {
 		camera.fieldOfView=normalZoom;
 		lastClick = Time.time;
 	}
-}}
+}

@@ -22,11 +22,10 @@ function Start() {
 
 function Update () {
 	//crosshair
-	if (!Pause.isPaused) {
-		boxSize = size*60/mainCamera.camera.fieldOfView;
-    	imageArea = Rect((Screen.width-boxSize)/2,(Screen.height-boxSize)/2,boxSize,boxSize);
-	}
+	boxSize = size*60/mainCamera.camera.fieldOfView;
+	imageArea = Rect((Screen.width-boxSize)/2,(Screen.height-boxSize)/2,boxSize,boxSize);
 }
+
 
 function OnGUI () {
 	GUI.depth = 1;

@@ -9,10 +9,8 @@ function Start () {
 }
 
 function Update () {
-	if (!Pause.isPaused) {
-		var directionVector:Vector3 = target.transform.position - transform.position;
-		directionVector.y = 0;
-		var targetRotation:Quaternion = Quaternion.LookRotation(directionVector);
-		transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, speed*Time.deltaTime);
-	}
+	var directionVector:Vector3 = target.transform.position - transform.position;
+	directionVector.y = 0;
+	var targetRotation:Quaternion = Quaternion.LookRotation(directionVector);
+	transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, speed*Time.deltaTime);
 }

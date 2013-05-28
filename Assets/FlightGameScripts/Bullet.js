@@ -20,19 +20,19 @@ function Start () {
 }
 
 function Update () {
-	if (!Pause.isPaused) {
-		// Move Ball forward
-		transform.Translate(Vector3.forward * Time.deltaTime * speed);
-		
-		// Record Distance.
-		dist += Time.deltaTime * speed;
-		
-		// If reach to my range, Destroy. 
-		if(dist >= range) {
-			Destroy(gameObject);
-		}
+	
+	// Move Ball forward
+	transform.Translate(Vector3.forward * Time.deltaTime * speed);
+	
+	// Record Distance.
+	dist += Time.deltaTime * speed;
+	
+	// If reach to my range, Destroy. 
+	if(dist >= range) {
+		Destroy(gameObject);
 	}
 }
+
 
 function OnCollisionEnter(myCollision: Collision){
 	// If hit something, Destroy.

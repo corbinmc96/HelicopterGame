@@ -14,22 +14,20 @@ function Start () {
 }
 
 function Update () {
-	if (!Pause.isPaused) {
-		transform.Translate(Vector3.right*rocketSpeed*Time.deltaTime);
-		if (Time.time - launchTime > 3) {
-			GameObject.Find(gameObject.name+"/Flame/InnerCore").particleEmitter.emit = false;
-			GameObject.Find(gameObject.name+"/Flame/OuterCore").particleEmitter.emit = false;
-			GameObject.Find(gameObject.name+"/Flame/Smoke").particleEmitter.emit = false;
-			
-			gameObject.rigidbody.useGravity = true;	
-		}
-		if (Time.time - launchTime > 5.5) {
-			Instantiate(explosion, transform.position, transform.rotation);
-			
-			Destroy(GameObject.Find(gameObject.name+"/Flame"),10);
-			transform.DetachChildren();
-			Destroy(gameObject);
-		}
+	transform.Translate(Vector3.right*rocketSpeed*Time.deltaTime);
+	if (Time.time - launchTime > 3) {
+		GameObject.Find(gameObject.name+"/Flame/InnerCore").particleEmitter.emit = false;
+		GameObject.Find(gameObject.name+"/Flame/OuterCore").particleEmitter.emit = false;
+		GameObject.Find(gameObject.name+"/Flame/Smoke").particleEmitter.emit = false;
+		
+		gameObject.rigidbody.useGravity = true;	
+	}
+	if (Time.time - launchTime > 5.5) {
+		Instantiate(explosion, transform.position, transform.rotation);
+		
+		Destroy(GameObject.Find(gameObject.name+"/Flame"),10);
+		transform.DetachChildren();
+		Destroy(gameObject);
 	}
 }
 

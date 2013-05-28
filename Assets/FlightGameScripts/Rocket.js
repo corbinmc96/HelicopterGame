@@ -9,14 +9,13 @@ function Start () {
 }
 
 function Update () {
-	if (!Pause.isPaused) {
 	if (Input.GetAxis("R1")==1) {
 		if (Time.time - rocketDelay >= lastShot) {
 			Instantiate (rocket,mainCamera.transform.position,mainCamera.transform.rotation);
 			lastShot= Time.time;
 		}
 	}
-}}
+}
 
 function AimVector () {
 	var hit : RaycastHit;

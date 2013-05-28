@@ -8,21 +8,20 @@ var ExploPtcl : GameObject;
 private var dist : float;
 
 function Update () {
-	if (!Pause.isPaused) {
 
-		// Move Ball forward
-		transform.Translate(Vector3.forward * Time.deltaTime * speed);
-		
-		// Record Distance.
-		dist += Time.deltaTime * speed;
-		
-		// If reach to my range, Destroy. 
-		if(dist >= range) {
-			Instantiate(ExploPtcl, transform.position, transform.rotation);
-			Destroy(gameObject);
-		}
+	// Move Ball forward
+	transform.Translate(Vector3.forward * Time.deltaTime * speed);
+	
+	// Record Distance.
+	dist += Time.deltaTime * speed;
+	
+	// If reach to my range, Destroy. 
+	if(dist >= range) {
+		//Instantiate(ExploPtcl, transform.position, transform.rotation);
+		Destroy(gameObject);
 	}
 }
+
 
 function OnCollisionEnter(other: Collision){
 	// If hit something, Destroy. 
