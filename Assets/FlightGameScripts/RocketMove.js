@@ -16,7 +16,7 @@ function Start () {
 function Update () {
 	transform.Translate(Vector3.right*rocketSpeed*Time.deltaTime);
 	if (Time.time - launchTime > 3) {
-		GameObject.Find(gameObject.name+"/Flame/InnerCore").particleEmitter.emit = false;
+		//GameObject.Find(gameObject.name+"/Flame/InnerCore").particleEmitter.emit = false;
 		GameObject.Find(gameObject.name+"/Flame/OuterCore").particleEmitter.emit = false;
 		GameObject.Find(gameObject.name+"/Flame/Smoke").particleEmitter.emit = false;
 		
@@ -44,7 +44,7 @@ function OnCollisionEnter (theHit : Collision) {
 	if (theHit.gameObject.name != helicopterName) {
 	Instantiate(explosion, transform.position, transform.rotation);
 	
-	GameObject.Find(gameObject.name+"/Flame/InnerCore").particleEmitter.emit = false;
+	//GameObject.Find(gameObject.name+"/Flame/InnerCore").particleEmitter.emit = false;
 	GameObject.Find(gameObject.name+"/Flame/OuterCore").particleEmitter.emit = false;
 	GameObject.Find(gameObject.name+"/Flame/Smoke").particleEmitter.emit = false;
 	

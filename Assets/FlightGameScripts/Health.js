@@ -17,7 +17,7 @@ function Update () {
 
 function OnCollisionEnter (theCrash : Collision) {
 	if ((theCrash.gameObject.tag == "Enemy") || (theCrash.gameObject.name == "Lava") || (theCrash.gameObject.name == "Terrain")) {
-		health = 0;
+		//health = 0;
 	}
 }
 
@@ -40,4 +40,3 @@ function Dead () {
 	gameObject.GetComponent(RocketLaunch).enabled = false;
 	gameObject.GetComponent(Health).enabled = false;
 }
-//code
