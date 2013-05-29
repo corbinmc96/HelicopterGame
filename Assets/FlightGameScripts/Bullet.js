@@ -13,7 +13,11 @@ private var launchTime : float;
 
 
 function Start () {
-	mainCamera = GameObject.Find(helicopterName + "/Main Camera");
+	if (GameObject.Find(helicopterName + "/Main Camera")) {
+		mainCamera = GameObject.Find(helicopterName + "/Main Camera");
+	} else {
+		mainCamera = GameObject.Find("Main Camera");
+	}
 	transform.LookAt(getPoint());
 	transform.Rotate(0,0,0);
 	launchTime = Time.time;

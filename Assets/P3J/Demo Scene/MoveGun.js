@@ -19,25 +19,27 @@ function Start () {
 }
 
 function Update () {
-	if (!Pause.isPaused) {
-		var directionVector:Vector3 = target.transform.position - transform.position;
-		var angle:float = Mathf.Asin(transform.forward.y / transform.forward.magnitude)*180/Mathf.PI;
-		var targetAngle:float = Mathf.Asin(directionVector.y / directionVector.magnitude)*180/Mathf.PI;
-		if ((lowerLimit < angle && targetAngle < angle) || (angle < upperLimit && angle < targetAngle)) {
-			var targetRotation : Quaternion = Quaternion.LookRotation(Quaternion.AngleAxis(-targetAngle, transform.right) * Vector3(transform.forward.x, 0, transform.forward.z), transform.parent.parent.up);
-			transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, speed * Time.deltaTime);
+	
+	//aim
+	var directionVector:Vector3 = target.transform.position - transform.position;
+	var angle:float = 90 - Vector3.Angle(transform.parent.parent.up, transform.forward);
+	var targetAngle:float = 90 - Vector3.Angle(transform.parent.parent.up, directionVector);
+	
+	if ((lowerLimit < angle && targetAngle < angle) || (angle < upperLimit && angle < targetAngle)) {
+		var targetRotation : Quaternion = Quaternion.LookRotation(Quaternion.AngleAxis(targetAngle, -transform.right) * transform.parent.forward, transform.parent.parent.up);
+		transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, speed * Time.deltaTime);
+	}
+	
+	//fire
+	if (Vector3.Angle(directionVector,transform.forward) < firingAngle && directionVector.magnitude < firingDistance && shotTime > shotDelay) {
+		Instantiate(fireEffect, firePoints[fireIndex].position, firePoints[fireIndex].rotation);
+		Instantiate(bulletObject, firePoints[fireIndex].position, firePoints[fireIndex].rotation);
+		shotTime = 0;
+		fireIndex++;
+		if (fireIndex == firePoints.length) {
+			fireIndex = 0;
 		}
-		
-		if (Vector3.Angle(directionVector,transform.forward) < firingAngle && directionVector.magnitude < firingDistance && shotTime > shotDelay) {
-			Instantiate(fireEffect, firePoints[fireIndex].position, firePoints[fireIndex].rotation);
-			Instantiate(bulletObject, firePoints[fireIndex].position, firePoints[fireIndex].rotation);
-			shotTime = 0;
-			fireIndex++;
-			if (fireIndex == firePoints.length) {
-				fireIndex = 0;
-			}
-		} else {
-			shotTime += Time.deltaTime;
-		}
+	} else {
+		shotTime += Time.deltaTime;
 	}
 }

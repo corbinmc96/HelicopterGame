@@ -15,7 +15,6 @@ function Start () {
 }
 
 function Update () {
-	if (!Pause.isPaused) {
 	if (Input.GetAxis("L1")==1) {
 		if (Time.time - rocketDelay >= lastMissile) {
 			Instantiate (rocket,helicopter.transform.position+helicopter.transform.TransformDirection(shotDirection*5,-6.4,-22),mainCamera.transform.rotation);
@@ -30,4 +29,4 @@ function Update () {
 			lastShot = Time.time;
 		}
 	}
-}}
+}
