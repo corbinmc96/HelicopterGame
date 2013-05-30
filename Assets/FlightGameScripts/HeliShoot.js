@@ -39,7 +39,7 @@ function Update () {
 	}
 }
 
-function OnTriggerEnter (theCollider : Collider) {
+function OnTriggerStay (theCollider : Collider) {
 	if (collider.gameObject.name=="Station") {
 		rocketsLeft=rocketCapacity;
 	}

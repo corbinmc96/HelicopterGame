@@ -27,7 +27,7 @@ function OnCollisionEnter (theCrash : Collision) {
 function OnTriggerStay (theCollider : Collider) {
 	//instantly health=100; should be fixed so it is gradual.
 	if (theCollider.gameObject.name=="Station") {
-		health=100;
+		health+=10*Time.deltaTime;
 	}
 }
 
