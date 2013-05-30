@@ -15,6 +15,7 @@ static var rocketsLeft : int;
 function Start () {
 	lastMissile = Time.time - rocketDelay;
 	lastShot = Time.time - shotDelay;
+	rocketsLeft=rocketCapacity;
 }
 
 function Update () {
