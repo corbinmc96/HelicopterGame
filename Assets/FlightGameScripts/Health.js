@@ -11,7 +11,7 @@ function Start () {
 function Update () {
 	var displayHealth = Mathf.Ceil(health);
 	if (health <= 0) {
-		health =0;
+		health = 0;
 		Dead();
 	}
 }
@@ -38,6 +38,6 @@ function Dead () {
 	Instantiate(explosion, transform.position, transform.rotation);
 	GameObject.Find("ControlHub").GetComponent(FadeOut).enabled = true;
 	gameObject.GetComponent(Movement).enabled = false;
-	gameObject.GetComponent(RocketLaunch).enabled = false;
+	gameObject.GetComponent(HeliShoot).enabled = false;
 	gameObject.GetComponent(Health).enabled = false;
 }
