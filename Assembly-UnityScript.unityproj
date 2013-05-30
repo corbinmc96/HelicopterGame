@@ -52,6 +52,7 @@
      <Compile Include="Assets\FlightGameScripts\FadeIn.js" />
      <Compile Include="Assets\FlightGameScripts\FadeOut.js" />
      <Compile Include="Assets\FlightGameScripts\ForwardRocket.js" />
+     <Compile Include="Assets\FlightGameScripts\GUICredits.js" />
      <Compile Include="Assets\FlightGameScripts\GUIHandler.js" />
      <Compile Include="Assets\FlightGameScripts\Health.js" />
      <Compile Include="Assets\FlightGameScripts\LavaMove.js" />
