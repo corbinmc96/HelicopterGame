@@ -42,14 +42,15 @@ function getPoint () {
 
 function OnCollisionEnter (theHit : Collision) {
 	if (theHit.gameObject.name != helicopterName) {
-	Instantiate(explosion, transform.position, transform.rotation);
-	
-	//GameObject.Find(gameObject.name+"/Flame/InnerCore").particleEmitter.emit = false;
-	GameObject.Find(gameObject.name+"/Flame/OuterCore").particleEmitter.emit = false;
-	GameObject.Find(gameObject.name+"/Flame/Smoke").particleEmitter.emit = false;
-	
-	Destroy(GameObject.Find(gameObject.name+"/Flame"),10);
-	GameObject.Find(gameObject.name+"/Flame").transform.parent = null;
-	Destroy(gameObject);
+		Instantiate(explosion, transform.position, transform.rotation);
+		
+		if (GameObject.Find(gameObject.name+"/Flame/OuterCore")) {
+			GameObject.Find(gameObject.name+"/Flame/OuterCore").particleEmitter.emit = false;
+			GameObject.Find(gameObject.name+"/Flame/Smoke").particleEmitter.emit = false;
+			
+			Destroy(GameObject.Find(gameObject.name+"/Flame"),10);
+			GameObject.Find(gameObject.name+"/Flame").transform.parent = null;
+			Destroy(gameObject);
+		}
 	}
 }
