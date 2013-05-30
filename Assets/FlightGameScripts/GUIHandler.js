@@ -49,7 +49,7 @@ function OnGUI () {
     }
     
     //life %
-    importHealth = helicopter.GetComponent(Health).health;
+    importHealth = Mathf.Ceil(helicopter.GetComponent(Health).health);
     if (importHealth<0) {
     	importHealth=0;
     }
