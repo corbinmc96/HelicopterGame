@@ -65,6 +65,7 @@
      <Compile Include="Assets\FlightGameScripts\RotorSpin.js" />
      <Compile Include="Assets\FlightGameScripts\ShellDamage.js" />
      <Compile Include="Assets\FlightGameScripts\Timer.js" />
+     <Compile Include="Assets\FlightGameScripts\TouchScreen.js" />
      <Compile Include="Assets\FlightGameScripts\Zoom.js" />
      <Compile Include="Assets\P3J\Demo Scene\AutoDestroy.js" />
      <Compile Include="Assets\P3J\Demo Scene\MoveGun.js" />
