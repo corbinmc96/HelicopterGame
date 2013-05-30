@@ -19,10 +19,25 @@ function Update () {
 
 
 function Dead () {
-	// add to number of tanks destroyed
 	yield WaitForSeconds(0.2);
 	Instantiate(explosion1, explosionPosition.position, transform.rotation);
 	yield WaitForSeconds(0.5);
+	
+	// var allTransforms = GetComponentsInChildren(Transform);
+	// for (var child:Transform in allTransforms) {
+		// if (child.name != gameObject.name) {
+			// child.gameObject.AddComponent("Rigidbody");
+			// child.gameObject.rigidbody.useGravity = true;
+			// child.gameObject.rigidbody.isKinematic = false;
+			// child.gameObject.rigidbody.mass *= 100;
+			// child.gameObject.rigidbody.drag = 2;
+			// child.gameObject.rigidbody.angularDrag = 0.2;
+			// child.gameObject.AddComponent("BoxCollider");
+			// //child.gameObject.GetComponent(SphereCollider).radius *= 0.1;
+		// }
+	// }
+	// transform.DetachChildren();
+
 	Instantiate(explosion2, explosionPosition.position, transform.rotation);
 	if (transform.Find("TurretBase")) {
 		transform.Find("TurretBase").parent = null;
