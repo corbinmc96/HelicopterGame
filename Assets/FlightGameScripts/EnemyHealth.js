@@ -2,16 +2,12 @@
 
 var health : float= 100;
 var explosionPosition : Transform;
-var explosion2Position : Transform;
 var explosion1 : GameObject;
 var explosion2 : GameObject;
 
 function Start () {
 	if (!explosionPosition) {
 		explosionPosition = transform;
-	}
-	if (!explosion2Position) {
-		explosion2Position = explosionPosition;
 	}
 }
 
@@ -27,7 +23,7 @@ function Dead () {
 	yield WaitForSeconds(0.2);
 	Instantiate(explosion1, explosionPosition.position, transform.rotation);
 	yield WaitForSeconds(0.5);
-	Instantiate(explosion2, explosion2Position.position, transform.rotation);
+	Instantiate(explosion2, explosionPosition.position, transform.rotation);
 	if (transform.Find("TurretBase")) {
 		transform.Find("TurretBase").parent = null;
 	}
