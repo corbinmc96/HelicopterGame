@@ -11,6 +11,7 @@ function Start () {
 function Update () {
 	var displayHealth = Mathf.Ceil(health);
 	if (health <= 0) {
+		health =0;
 		Dead();
 	}
 }

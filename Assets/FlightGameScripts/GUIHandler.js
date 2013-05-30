@@ -50,12 +50,18 @@ function OnGUI () {
     
     //life %
     importHealth = helicopter.GetComponent(Health).health;
+    if (importHealth<0) {
+    	importHealth=0;
+    }
 	stringHealth = importHealth.ToString();
 	GUI.Label(Rect(wPiece/2,hPiece,3*wPiece,3*hPiece),stringHealth+"%",lifeStyle);
 	
 	//Enemy count
 	GUI.Label(Rect(wPiece/2,4*hPiece,wPiece,hPiece), "Enemies Killed: "+enemiesKilled.ToString(),enemyStyle);
 	GUI.Label(Rect(wPiece/2,5*hPiece,wPiece,hPiece), "Enemies Left: "+enemiesLeft.ToString(),enemyStyle);
+	if (enemiesLeft<=0) {
+		GameObject.Find("ControlHub").GetComponent(FadeOut).enabled = true;
+	}
 	
 	//Pause
 	if (Pause.isPaused) {
