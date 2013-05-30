@@ -24,9 +24,9 @@ function OnCollisionEnter (theCrash : Collision) {
 	}
 }
 
-function OnTriggerEnter (theCollider : Collider) {
+function OnTriggerStay (theCollider : Collider) {
 	//instantly health=100; should be fixed so it is gradual.
-	if (collider.gameObject.name=="Station") {
+	if (theCollider.gameObject.name=="Station") {
 		health=100;
 	}
 }
@@ -47,6 +47,6 @@ function Dead () {
 	Instantiate(explosion, transform.position, transform.rotation);
 	GameObject.Find("ControlHub").GetComponent(FadeOut).enabled = true;
 	gameObject.GetComponent(Movement).enabled = false;
-	gameObject.GetComponent(RocketLaunch).enabled = false;
+	gameObject.GetComponent(HeliShoot).enabled = false;
 	gameObject.GetComponent(Health).enabled = false;
 }
