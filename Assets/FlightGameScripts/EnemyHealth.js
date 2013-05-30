@@ -28,6 +28,6 @@ function Dead () {
 		transform.Find("TurretBase").parent = null;
 	}
 	Destroy(gameObject);
-	GameObject.Find("ControlHub").GetComponent(GUIHandler).enemiesKilled+=1;
-	GameObject.Find("ControlHub").GetComponent(GUIHandler).enemiesLeft-=1;
+	GameObject.Find("ControlHub").GetComponent(GUIHandler).enemiesKilled++;
+	GameObject.Find("ControlHub").GetComponent(GUIHandler).enemiesLeft--;
 }

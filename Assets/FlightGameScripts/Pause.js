@@ -28,13 +28,3 @@ function Update () {
 		}
 	}
 }
-
-
-function OnGUI () {
-	if (isPaused) {
-		pauseText = "Paused";
-	} else {
-		pauseText ='';
-	}
-	GUI.Label(Rect(-75,-75/2.0,150,75),pauseText,myStyle);
-}

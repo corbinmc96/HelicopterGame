@@ -1,4 +1,9 @@
 #pragma strict
+
+var screenDivisions : int = 35;
+private var wPiece : float = Screen.width/screenDivisions;
+private var hPiece : float = Screen.height/screenDivisions;
+
 //crossharir
 var crossImage : Texture2D;
 var size : int;
@@ -15,8 +20,17 @@ private var stringHealth : String;
 //enemy count
 var enemiesLeft : int;
 var enemiesKilled: int = 0;
+var enemyStyle:GUIStyle;
+
+//pause test
+private var pauseText : String;
+var pauseStyle : GUIStyle;
 
 function Start() {
+	for (i in [enemyStyle,pauseStyle,lifeStyle]) {
+		i.fontSize=i.fontSize*Screen.height/650;
+	}
+	size = size*Screen.height/1000;
 	enemiesLeft=GameObject.FindGameObjectsWithTag("Enemy").length;
 }
 
@@ -24,21 +38,30 @@ function Update () {
 	//crosshair
 	boxSize = size*60/mainCamera.camera.fieldOfView;
 	imageArea = Rect((Screen.width-boxSize)/2,(Screen.height-boxSize)/2,boxSize,boxSize);
-	
-	//RANDOM TOUCH SCREEN CRAP
-	if (Input.touches.length>0) {
-		Debug.Log((Input.GetTouch(0).position.x/Screen.width).ToString()+'    '+(Input.GetTouch(0).position.y/Screen.height).ToString());
-	}
 }
 
 
 function OnGUI () {
 	GUI.depth = 1;
     //crosshair
-    GUI.DrawTexture(imageArea,crossImage);
+    if (!Pause.isPaused) {
+    	GUI.DrawTexture(imageArea,crossImage);
+    }
     
     //life %
     importHealth = helicopter.GetComponent(Health).health;
 	stringHealth = importHealth.ToString();
-	GUI.Label(Rect(25,0,150,75),stringHealth+"%",lifeStyle);
+	GUI.Label(Rect(wPiece/2,hPiece,3*wPiece,3*hPiece),stringHealth+"%",lifeStyle);
+	
+	//Enemy count
+	GUI.Label(Rect(wPiece/2,4*hPiece,wPiece,hPiece), "Enemies Killed: "+enemiesKilled.ToString(),enemyStyle);
+	GUI.Label(Rect(wPiece/2,5*hPiece,wPiece,hPiece), "Enemies Left: "+enemiesLeft.ToString(),enemyStyle);
+	
+	//Pause
+	if (Pause.isPaused) {
+		pauseText = "Paused";
+	} else {
+		pauseText ='';
+	}
+	GUI.Label(Rect(Screen.width/2-2*wPiece,Screen.height/2-2*hPiece,4*wPiece,4*hPiece),pauseText,pauseStyle);
 }
