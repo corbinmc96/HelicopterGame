@@ -5,5 +5,5 @@ function Start () {
 }
 
 function Update () {
-	//Debug.Log(Input.GetButton("Start"));
+	Debug.Log(Input.GetButton("Start"));
 }
