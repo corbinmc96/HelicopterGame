@@ -44,7 +44,7 @@ function OnCollisionEnter (theHit : Collision) {
 	if (theHit.gameObject.name != helicopterName) {
 	Instantiate(explosion, transform.position, transform.rotation);
 	
-	if (GameObject.Find(gameObject.name+"/Flame/OuterCore").particleEmitter) {
+	if (GameObject.Find(gameObject.name+"/Flame/OuterCore")) {
 		GameObject.Find(gameObject.name+"/Flame/OuterCore").particleEmitter.emit = false;
 		GameObject.Find(gameObject.name+"/Flame/Smoke").particleEmitter.emit = false;
 	}
