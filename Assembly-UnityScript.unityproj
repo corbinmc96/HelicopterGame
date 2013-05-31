@@ -64,8 +64,8 @@
      <Compile Include="Assets\FlightGameScripts\RocketMove.js" />
      <Compile Include="Assets\FlightGameScripts\RotorSpin.js" />
      <Compile Include="Assets\FlightGameScripts\ShellDamage.js" />
+     <Compile Include="Assets\FlightGameScripts\TS.js" />
      <Compile Include="Assets\FlightGameScripts\Timer.js" />
-     <Compile Include="Assets\FlightGameScripts\TouchScreen.js" />
      <Compile Include="Assets\FlightGameScripts\Zoom.js" />
      <Compile Include="Assets\P3J\Demo Scene\AutoDestroy.js" />
      <Compile Include="Assets\P3J\Demo Scene\MoveGun.js" />
@@ -74,6 +74,7 @@
      <Compile Include="Assets\P3J\Demo Scene\MoveTurret.js" />
      <Compile Include="Assets\Turrets\RotateBarrel.js" />
      <Compile Include="Assets\Turrets\RotateTurret.js" />
+     <Compile Include="Assets\test.js" />
      <None Include="Assets\Standard Assets\Hard Surface Free\HardSurface Shaders\HardSurfacePro Hidden Front Cut Out Specular.shader" />
      <None Include="Assets\Standard Assets\Hard Surface Free\HardSurface Shaders\HardSurface Free Cut Out Opaque Bump.shader" />
      <None Include="Assets\Standard Assets\Hard Surface Free\HardSurface Shaders\HardSurfacePro Hidden Front Transparent.shader" />

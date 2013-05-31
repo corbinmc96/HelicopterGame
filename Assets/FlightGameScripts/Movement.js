@@ -26,8 +26,8 @@ function Update () {
 	transform.Translate(Vector3.up * Input.GetAxis("Triggers") * ElevationSpeed * burst * Time.deltaTime, Space.World);
 	transform.Translate(Vector3.right * Input.GetAxis("Left X") * MoveSpeed * burst * Time.deltaTime);
 	transform.Translate(noRiseVector * Input.GetAxis("Left Y") * MoveSpeed * burst * Time.deltaTime, Space.World);
-	transform.Rotate(Vector3.up * Input.GetAxis("Right X") * LookSpeed * Time.deltaTime);
-	transform.Rotate(Vector3.right * Input.GetAxis("Right Y") * LookSpeed * Time.deltaTime);	
+	transform.Rotate(Vector3.up * Input.acceleration.x * LookSpeed * Time.deltaTime);
+	transform.Rotate(Vector3.right * Input.acceleration.z* LookSpeed * Time.deltaTime);	
 	transform.eulerAngles.z = 0;
 	if (transform.eulerAngles.x > MaxTilt && transform.eulerAngles.x < 340 - MaxTilt) {
 		transform.eulerAngles.x = MaxTilt;

@@ -24,11 +24,6 @@ function Update () {
 	//crosshair
 	boxSize = size*60/mainCamera.camera.fieldOfView;
 	imageArea = Rect((Screen.width-boxSize)/2,(Screen.height-boxSize)/2,boxSize,boxSize);
-	
-	//RANDOM TOUCH SCREEN CRAP
-	if (Input.touches.length>0) {
-		Debug.Log((Input.GetTouch(0).position.x/Screen.width).ToString()+'    '+(Input.GetTouch(0).position.y/Screen.height).ToString());
-	}
 }
 
 
