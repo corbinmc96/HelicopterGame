@@ -19,7 +19,7 @@ function Update () {
 }
 
 function OnCollisionEnter (theCrash : Collision) {
-	if ((theCrash.gameObject.tag == "Enemy") || (theCrash.gameObject.name == "Lava")){
+	if ((theCrash.gameObject.name == "Water") || (theCrash.gameObject.name == "Lava")){
 		health = 0;
 	}
 }

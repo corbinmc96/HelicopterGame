@@ -5,7 +5,6 @@ var initialLookSpeed : float;
 private var LookSpeed : float;
 var ElevationSpeed : int;
 var MaxTilt : int = 30;
-private var burst : int;
 var mainCamera : GameObject;
 
 
@@ -15,17 +14,11 @@ function Start () {
 
 function Update () {
 	LookSpeed= initialLookSpeed*mainCamera.camera.fieldOfView/60;
-	if (Input.GetAxis("X")) {
-		burst = 3;
-	}
-	else {
-		burst = 1;
-	}
 	var noRiseVector = transform.forward;
 	noRiseVector.y = 0;
-	transform.Translate(Vector3.up * Input.GetAxis("Triggers") * ElevationSpeed * burst * Time.deltaTime, Space.World);
-	transform.Translate(Vector3.right * Input.GetAxis("Left X") * MoveSpeed * burst * Time.deltaTime);
-	transform.Translate(noRiseVector * Input.GetAxis("Left Y") * MoveSpeed * burst * Time.deltaTime, Space.World);
+	transform.Translate(Vector3.up * Input.GetAxis("Triggers") * ElevationSpeed  * Time.deltaTime, Space.World);
+	transform.Translate(Vector3.right * Input.GetAxis("Left X") * MoveSpeed  * Time.deltaTime);
+	transform.Translate(noRiseVector * Input.GetAxis("Left Y") * MoveSpeed  * Time.deltaTime, Space.World);
 	transform.Rotate(Vector3.up * Input.GetAxis("Right X") * LookSpeed * Time.deltaTime);
 	transform.Rotate(Vector3.right * Input.GetAxis("Right Y") * LookSpeed * Time.deltaTime);	
 	transform.eulerAngles.z = 0;
@@ -50,15 +43,6 @@ function Update () {
 	if (transform.position.x < 0) {
 		transform.position.x = 0;
 	}
-	if (Input.GetAxis("Square") == 1 || Input.GetAxis("L3") == 1){
-		transform.eulerAngles.x = 0;
-	}
-	//if (Input.GetAxis("Up") == 1) {
-		//transform.eulerAngles.x = MaxTilt;
-	//}
-	//if (Input.GetAxis("Down") == 1) {
-		//transform.eulerAngles.x = 360-MaxTilt;
-	//}
 }
 
 function OnCollisionEnter (myCollision : Collision) {

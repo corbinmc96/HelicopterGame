@@ -46,6 +46,7 @@
   <ItemGroup>
      <Compile Include="Assets\FlightGameScripts\AxisTest.js" />
      <Compile Include="Assets\FlightGameScripts\Ball.js" />
+     <Compile Include="Assets\FlightGameScripts\BeamRotate.js" />
      <Compile Include="Assets\FlightGameScripts\Bullet.js" />
      <Compile Include="Assets\FlightGameScripts\BulletDamage.js" />
      <Compile Include="Assets\FlightGameScripts\EnemyHealth.js" />
