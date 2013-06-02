@@ -21,7 +21,7 @@ function Update () {
 	transform.Translate(noRiseVector * Input.GetAxis("Left Y") * MoveSpeed  * Time.deltaTime, Space.World);
 	transform.Rotate(Vector3.up * Input.GetAxis("Right X") * LookSpeed * Time.deltaTime);
 	transform.Rotate(Vector3.right * Input.GetAxis("Right Y") * LookSpeed * Time.deltaTime);	
-	transform.eulerAngles.z = 0;
+	transform.eulerAngles.z = 0;	
 	if (transform.eulerAngles.x > MaxTilt && transform.eulerAngles.x < 340 - MaxTilt) {
 		transform.eulerAngles.x = MaxTilt;
 	}
