@@ -3,20 +3,11 @@
 var speed : float = 30;
 var targetName : String;
 private var target : GameObject;
-
-private var firePoint : Transform;
-private var barrelName:String = "Barrel";
-private var bulletSpeed:float;
 private var HElevationSpeed:float;
 private var HMoveSpeed:float;
 
 function Start () {
-	if (!transform.Find(barrelName)) {
-		barrelName += "1";
-	}
-	firePoint = transform.Find(barrelName).Find("FirePoint");
 	target = GameObject.Find(targetName + "/Target Point");
-	bulletSpeed = transform.Find(barrelName).gameObject.GetComponent(RotateBarrel).bulletObject.GetComponent(Ball).speed;
 	HElevationSpeed = GameObject.Find(targetName).GetComponent(Movement).ElevationSpeed;
 	HMoveSpeed = GameObject.Find(targetName).GetComponent(Movement).MoveSpeed;
 }
@@ -25,10 +16,10 @@ function Update () {
 	var targetForwardNoRise:Vector3 = target.transform.forward;
 	targetForwardNoRise.y = 0;
 	
-	var T:Vector3 = transform.Find(barrelName).position;
+	var T:Vector3 = transform.Find("cannon").position;
 	var H:Vector3 = target.transform.position;
-	var d:float = (T - firePoint.position).magnitude;
-	var s:float = bulletSpeed;
+	var d:float = (T - transform.Find("cannon").Find("FirePoint").position).magnitude;
+	var s:float = transform.Find("cannon").GetComponent(MoveGun).bulletObject.GetComponent(Ball).speed;
 	var v:Vector3 = Vector3.up*Input.GetAxis("Triggers")*HElevationSpeed + target.transform.right*Input.GetAxis("Left X")*HMoveSpeed + targetForwardNoRise*Input.GetAxis("Left Y")*HMoveSpeed;
 	
 	//s checks!
@@ -46,7 +37,12 @@ function Update () {
 	var aimPoint:Vector3 = H + time*v;
 
 	var directionVector:Vector3 = aimPoint - transform.position;
-	directionVector.y = 0;
-	var targetRotation:Quaternion = Quaternion.LookRotation(directionVector);
+	var angle:float = Vector3.Angle(directionVector, transform.up);
+	var directionVectorPoint:Vector3 = transform.position + directionVector.normalized;
+	var upVectorPoint:Vector3 = transform.position + Mathf.Cos(angle/180*Mathf.PI) * transform.up;
+	
+	var lookVector:Vector3 = directionVectorPoint - upVectorPoint;
+	
+	var targetRotation:Quaternion = Quaternion.LookRotation(lookVector, transform.parent.up);
 	transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, speed*Time.deltaTime);
 }
