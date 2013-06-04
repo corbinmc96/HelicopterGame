@@ -11,9 +11,9 @@ function Start () {
 function Update () {
 	var displayHealth = Mathf.Ceil(health);
 	if (health <= 0) {
-		health =0;
+		health = 0;
 		Dead();
-	} if (health >=100) {
+	} if (health >= 100) {
 		health = 100;
 	}
 }
@@ -49,4 +49,5 @@ function Dead () {
 	gameObject.GetComponent(Movement).enabled = false;
 	gameObject.GetComponent(HeliShoot).enabled = false;
 	gameObject.GetComponent(Health).enabled = false;
+	gameObject.GetComponent(AudioSource).enabled = false;
 }
