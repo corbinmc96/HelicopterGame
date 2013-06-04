@@ -7,15 +7,12 @@ var ElevationSpeed : int;
 var MaxTilt : int = 30;
 var mainCamera : GameObject;
 
-
-function Start () {
-	//transform.position = Vector3(0,100,0);
-}
-
 function Update () {
-	LookSpeed= initialLookSpeed*mainCamera.camera.fieldOfView/60;
+	LookSpeed = initialLookSpeed*mainCamera.camera.fieldOfView/60;
 	var noRiseVector = transform.forward;
 	noRiseVector.y = 0;
+	noRiseVector = noRiseVector.normalized;
+	
 	transform.Translate(Vector3.up * Input.GetAxis("Triggers") * ElevationSpeed  * Time.deltaTime, Space.World);
 	transform.Translate(Vector3.right * Input.GetAxis("Left X") * MoveSpeed  * Time.deltaTime);
 	transform.Translate(noRiseVector * Input.GetAxis("Left Y") * MoveSpeed  * Time.deltaTime, Space.World);
@@ -43,7 +40,4 @@ function Update () {
 	if (transform.position.x < 0) {
 		transform.position.x = 0;
 	}
-}
-
-function OnCollisionEnter (myCollision : Collision) {
 }

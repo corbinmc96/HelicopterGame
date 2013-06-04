@@ -2,6 +2,7 @@
 
 var speed : float = 30;
 var targetName : String;
+var barrelName:String = "cannon";
 private var target : GameObject;
 private var HElevationSpeed:float;
 private var HMoveSpeed:float;
@@ -16,10 +17,10 @@ function Update () {
 	var targetForwardNoRise:Vector3 = target.transform.forward;
 	targetForwardNoRise.y = 0;
 	
-	var T:Vector3 = transform.Find("cannon").position;
+	var T:Vector3 = transform.Find(barrelName).position;
 	var H:Vector3 = target.transform.position;
-	var d:float = (T - transform.Find("cannon").Find("FirePoint").position).magnitude;
-	var s:float = transform.Find("cannon").GetComponent(MoveGun).bulletObject.GetComponent(Ball).speed;
+	var d:float = (T - transform.Find(barrelName).Find("FirePoint").position).magnitude;
+	var s:float = transform.Find(barrelName).GetComponent(MoveGun).bulletObject.GetComponent(Ball).speed;
 	var v:Vector3 = Vector3.up*Input.GetAxis("Triggers")*HElevationSpeed + target.transform.right*Input.GetAxis("Left X")*HMoveSpeed + targetForwardNoRise*Input.GetAxis("Left Y")*HMoveSpeed;
 	
 	//s checks!
