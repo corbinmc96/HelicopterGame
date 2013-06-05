@@ -14,9 +14,15 @@ function OnCollisionEnter (myCollision:Collision) {
 	for (var hitCollider:Collider in hits) {
 		if (!hitObjects.Contains(hitCollider.transform.root.gameObject)) {
 			hitObjects.Add(hitCollider.transform.root.gameObject);
+			var distance:float;
 			if (hitObjects[hitObjects.Count-1].GetComponent(EnemyHealth)!=null) {
-				var distance:float = (hitCollider.ClosestPointOnBounds(transform.position)-transform.position).magnitude;
+				distance = (hitCollider.ClosestPointOnBounds(transform.position)-transform.position).magnitude;
 				hitObjects[hitObjects.Count-1].GetComponent(EnemyHealth).health -= rocketDamage * (damageRadius - distance)/damageRadius;
+				//Debug.Log(hitObjects[hitObjects.Count-1]);
+				//Debug.Log(rocketDamage * (damageRadius - distance)/damageRadius);
+			} else if (hitObjects[hitObjects.Count-1].GetComponent(BigEnemyHealth)!=null) {
+				distance = (hitCollider.ClosestPointOnBounds(transform.position)-transform.position).magnitude;
+				hitObjects[hitObjects.Count-1].GetComponent(BigEnemyHealth).health -= rocketDamage * (damageRadius - distance)/damageRadius;
 				//Debug.Log(hitObjects[hitObjects.Count-1]);
 				//Debug.Log(rocketDamage * (damageRadius - distance)/damageRadius);
 			}
