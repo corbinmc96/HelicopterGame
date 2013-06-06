@@ -7,9 +7,15 @@ function OnLevelWasLoaded () {
 	startTime = Time.time;
 }
 
+function Update () {
+	if (Time.time>startTime+6) {
+		Application.LoadLevel("Menu");
+	}
+}
+
 function OnGUI () {
 	if (Time.time - startTime > 4) {
-		Destroy(gameObject.GetComponent(FadeIn));
+		//Destroy(gameObject.GetComponent(FadeIn));
 	}
 	GUI.color = Color.white;
 	GUI.color.a = Mathf.Lerp(1, 0, (Time.time - startTime)/4);
