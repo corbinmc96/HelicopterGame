@@ -1,7 +1,7 @@
 #pragma strict
 import System.Collections.Generic;
 
-var rocketDamage : int = 10;
+var rocketDamage : int = 10 * PlayerPrefs.GetFloat("RocketDamage",1);
 var damageRadius : int = 5;
 
 function OnCollisionEnter (myCollision:Collision) {

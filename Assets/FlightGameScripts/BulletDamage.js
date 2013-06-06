@@ -1,6 +1,6 @@
 #pragma strict
 
-var bulletDamage : float ;
+var bulletDamage : float = .4 * PlayerPrefs.GetFloat("MachineGunDamage",1);
 
 function OnCollisionEnter (myCollision:Collision) {
 	if (myCollision.gameObject.GetComponent(EnemyHealth)) {

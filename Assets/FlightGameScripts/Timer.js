@@ -20,7 +20,7 @@ function OnGUI () {
 		secondsString=seconds.ToString();
 	}
 	var stringClock = Array(minutes,":",secondsString).Join("");
-	GUI.Label(Rect(Screen.width-150,0,150,100),stringClock,myStyle);
+	GUI.Label(Rect(Screen.width-150,100,150,100),stringClock,myStyle);
 }
 
 // attatch to empty gameobject ControlHub

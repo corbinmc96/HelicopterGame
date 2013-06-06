@@ -1,20 +1,22 @@
 #pragma strict
 
+var maxHealth : float ;
 var health : float;
 var displayHealth : int;
 var explosion:GameObject;
 
 function Start () {
-	var health = 100;
+	var health = maxHealth;
 }
 
 function Update () {
-	var displayHealth = Mathf.Ceil(health);
+	maxHealth = PlayerPrefs.GetFloat("Armout",100);
+	displayHealth = Mathf.Ceil(health/maxHealth);
 	if (health <= 0) {
 		health = 0;
 		Dead();
-	} if (health >= 100) {
-		health = 100;
+	} if (health >= maxHealth) {
+		health = maxHealth;
 	}
 }
 

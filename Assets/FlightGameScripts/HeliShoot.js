@@ -8,11 +8,12 @@ private var lastShot : float;
 private var lastMissile : float;
 private var shotDirection : int = 1;
 
-var rocketCapacity : int;
+var rocketCapacity : int ;
 static var rocketsLeft : int;
 
 
 function Start () {
+	rocketCapacity = PlayerPrefs.GetInt("Rockets",0);
 	lastMissile = Time.time - rocketDelay;
 	lastShot = Time.time - shotDelay;
 	rocketsLeft=rocketCapacity;

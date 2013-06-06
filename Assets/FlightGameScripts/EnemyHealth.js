@@ -1,11 +1,13 @@
 #pragma strict
 
-var health : float= 100;
+var initialHealth : int = 100;
+var health : float;
 var explosionPosition : Transform;
 var explosion1 : GameObject;
 var explosion2 : GameObject;
 
 function Start () {
+	health = initialHealth;
 	if (!explosionPosition) {
 		explosionPosition = transform;
 	}
@@ -19,6 +21,7 @@ function Update () {
 
 
 function Dead () {
+	PlayerPrefs.SetInt("Money",PlayerPrefs.GetInt("Money",0)+initialHealth);
 	yield WaitForSeconds(0.2);
 	Instantiate(explosion1, explosionPosition.position, transform.rotation);
 	yield WaitForSeconds(0.5);
