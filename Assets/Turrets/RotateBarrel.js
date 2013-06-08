@@ -38,7 +38,7 @@ function Update () {
 	var d:float = (T - mainFirePoint.position).magnitude;
 	var s:float = bulletSpeed;
 	var v:Vector3 = Vector3.up*Input.GetAxis("Triggers")*HElevationSpeed + target.transform.right*Input.GetAxis("Left X")*HMoveSpeed + targetForwardNoRise*Input.GetAxis("Left Y")*HMoveSpeed;
-	
+
 	//s checks!
 	//v checks!
 	

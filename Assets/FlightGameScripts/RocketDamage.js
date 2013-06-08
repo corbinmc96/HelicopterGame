@@ -4,7 +4,7 @@ import System.Collections.Generic;
 var rocketDamage : int = 10 * PlayerPrefs.GetFloat("RocketDamage",1);
 var damageRadius : int = 5;
 
-function OnCollisionEnter (myCollision:Collision) {
+function OnCollisionEnter () {
 	var hits:Collider[] = Physics.OverlapSphere(transform.position, damageRadius);
 	var hitObjects:List.<GameObject> = new List.<GameObject>();
 	System.Array.Sort(hits,
