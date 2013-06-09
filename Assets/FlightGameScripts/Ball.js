@@ -23,7 +23,13 @@ function Update () {
 }
 
 
-function OnCollisionEnter(other: Collision){
+function OnTriggerEnter() {
+	// If hit something, Destroy. 
+	Instantiate(ExploPtcl, transform.position, transform.rotation);
+	Destroy(gameObject);
+}
+
+function OnCollisionEnter() {
 	// If hit something, Destroy. 
 	Instantiate(ExploPtcl, transform.position, transform.rotation);
 	Destroy(gameObject);

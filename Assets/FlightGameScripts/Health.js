@@ -1,9 +1,9 @@
 #pragma strict
 
-var maxHealth : float ;
+var maxHealth : float;
 var health : float;
 var displayHealth : int;
-var explosion:GameObject;
+var explosion : GameObject;
 
 function Start () {
 	var health = maxHealth;
@@ -27,7 +27,6 @@ function OnCollisionEnter (theCrash : Collision) {
 }
 
 function OnTriggerStay (theCollider : Collider) {
-	//instantly health=100; should be fixed so it is gradual.
 	if (theCollider.gameObject.name=="Station") {
 		health+=10*Time.deltaTime;
 	}

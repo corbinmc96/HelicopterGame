@@ -18,13 +18,13 @@ function Update () {
 		transform.Rotate(transform.up, 5 * Time.deltaTime);
 		transform.Rotate(transform.right, -6 * Time.deltaTime * Mathf.Pow(0.9, Time.time - deadTime));
 	} else if (health <= 0) {
+		deadTime = Time.time;
 		Dead();
 	}
 }
 
 function Dead () {
 	PlayerPrefs.SetInt("Money",PlayerPrefs.GetInt("Money",0)+initialHealth);
-	deadTime = Time.time;
 	rigidbody.isKinematic = true;
 
 	var length:int = explosionPositions.Count;

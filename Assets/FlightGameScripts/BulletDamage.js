@@ -8,6 +8,11 @@ function OnCollisionEnter (myCollision:Collision) {
 	} else if (myCollision.gameObject.GetComponent(BigEnemyHealth)) {
 		myCollision.gameObject.GetComponent(BigEnemyHealth).health -= bulletDamage;
 	}
+	for (var contact:ContactPoint in myCollision.contacts) {
+		if (contact.otherCollider.gameObject.GetComponent(TurretHealth)) {
+			contact.otherCollider.gameObject.GetComponent(TurretHealth).health -= bulletDamage;
+		}
+	}
 }
 
 // attach to bullet prefab 

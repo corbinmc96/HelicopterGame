@@ -8,7 +8,7 @@ function OnLevelWasLoaded () {
 }
 
 function Update () {
-	if (Time.time>startTime+6) {
+	if (Time.time > startTime+6) {
 		Application.LoadLevel("Menu");
 	}
 }

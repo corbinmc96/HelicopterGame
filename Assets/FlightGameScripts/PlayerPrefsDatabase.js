@@ -16,5 +16,5 @@ function Start () {
 }
 
 function Update () {
-	Debug.Log(PlayerPrefs.GetInt("Money",-1));
+	//Debug.Log(PlayerPrefs.GetInt("Money",-1));
 }

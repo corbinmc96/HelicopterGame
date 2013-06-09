@@ -7,3 +7,9 @@ function OnCollisionEnter (myCollision:Collision) {
 		myCollision.gameObject.GetComponent(Health).health-=shellDamage;
 	}
 }
+
+function OnTriggerEnter (myCollider:Collider) {
+	if (myCollider.gameObject.GetComponent(Health)!=null) {
+		myCollider.gameObject.GetComponent(Health).health-=shellDamage;
+	}
+}

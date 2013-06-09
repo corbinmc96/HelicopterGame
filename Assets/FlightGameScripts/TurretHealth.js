@@ -1,6 +1,6 @@
 #pragma strict
 
-var initialHealth : int = 100;
+var initialHealth : int = 5;
 var health : float;
 var explosionPosition : Transform;
 var explosion1 : GameObject;
@@ -26,14 +26,11 @@ function Dead () {
 	PlayerPrefs.SetInt("Money",PlayerPrefs.GetInt("Money",0)+initialHealth);
 	
 	yield WaitForSeconds(0.2);
-	Instantiate(explosion1, explosionPosition.position, transform.rotation);
-	yield WaitForSeconds(0.8);
-	Instantiate(explosion2, explosionPosition.position, transform.rotation);
+	var expl1:GameObject = Instantiate(explosion1, explosionPosition.position, transform.rotation);
+	expl1.transform.parent = transform.parent;
+	yield WaitForSeconds(0.5);
+	var expl2:GameObject = Instantiate(explosion2, explosionPosition.position, transform.rotation);
+	expl2.transform.parent = transform.parent;
 	
-	if (transform.Find("TurretBase")) {
-		transform.Find("TurretBase").parent = null;
-	}
 	Destroy(gameObject);
-	GameObject.Find("ControlHub").GetComponent(GUIHandler).enemiesKilled++;
-	GameObject.Find("ControlHub").GetComponent(GUIHandler).enemiesLeft--;
 }
