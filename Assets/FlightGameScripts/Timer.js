@@ -6,6 +6,7 @@ var myStyle : GUIStyle;
 
 function Start () {
 	startTime = Time.time;
+	myStyle.fontSize = myStyle.fontSize *Screen.width/1000;
 }
 
 function OnGUI () {
@@ -20,7 +21,7 @@ function OnGUI () {
 		secondsString=seconds.ToString();
 	}
 	var stringClock = Array(minutes,":",secondsString).Join("");
-	GUI.Label(Rect(Screen.width-150,100,150,100),stringClock,myStyle);
+	GUI.Label(Rect(Screen.width-(150*Screen.width/1000),60*Screen.width/1000,135*Screen.width/1000,75*Screen.width/1000),stringClock,myStyle);
 }
 
 // attatch to empty gameobject ControlHub
