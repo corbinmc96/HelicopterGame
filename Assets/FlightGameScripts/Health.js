@@ -6,11 +6,11 @@ var displayHealth : int;
 var explosion : GameObject;
 
 function Start () {
+    maxHealth = PlayerPrefs.GetFloat("Armor",100);
 	var health = maxHealth;
 }
 
 function Update () {
-	maxHealth = PlayerPrefs.GetFloat("Armout",100);
 	displayHealth = Mathf.Ceil(health/maxHealth);
 	if (health <= 0) {
 		health = 0;

@@ -3,8 +3,8 @@
 function Start () {
 	if (!PlayerPrefs.HasKey("Rockets")) {
 		PlayerPrefs.SetInt("Rockets",0);
-	} if (!PlayerPrefs.HasKey("Armour")) {
-		PlayerPrefs.SetInt("Armour",1);
+	} if (!PlayerPrefs.HasKey("Armor")) {
+		PlayerPrefs.SetInt("Armor",1);
 	} if (!PlayerPrefs.HasKey("RocketDamage")) {
 		PlayerPrefs.SetInt("RocketDamage",1);
 	} if (!PlayerPrefs.HasKey("MachineGunDamage")) {
