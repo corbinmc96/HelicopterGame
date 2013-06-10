@@ -1,7 +1,7 @@
 Sugested Additions:
 
-Upgrades (reserved by corbin)
-Money (and this too)
+x Upgrades (reserved by corbin)
+x Money (and this too)
 Ally
 Enemy heli
 Instructions
@@ -9,5 +9,5 @@ Objectives optional
 Time restraint
 More enemies
 More clustering
-Menu
-Loop at end
+x Menu
+x Loop at end
