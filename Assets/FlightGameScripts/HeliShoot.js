@@ -15,7 +15,7 @@ function Start () {
 }
 
 function Update () {
-	if (TS.l1==1) {
+	if (TS.rocket==1) {
 		if (Time.time - rocketDelay >= lastMissile) {
 			Instantiate (rocket,helicopter.transform.position+helicopter.transform.TransformDirection(shotDirection*5,-6.4,-22),mainCamera.transform.rotation);
 			lastMissile= Time.time;
@@ -23,7 +23,7 @@ function Update () {
 			
 		}
 	}
-	if (TS.r1==1) {
+	if (TS.gun==1) {
 		if (Time.time - shotDelay >= lastShot) {
 			Instantiate (bullet, helicopter.transform.position+helicopter.transform.TransformDirection(0,-7.7,-19), mainCamera.transform.rotation);
 			lastShot = Time.time;

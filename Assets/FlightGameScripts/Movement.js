@@ -5,7 +5,6 @@ var initialLookSpeed : float;
 private var LookSpeed : float;
 var ElevationSpeed : int;
 var MaxTilt : int = 30;
-private var burst : int;
 var mainCamera : GameObject;
 
 
@@ -15,19 +14,13 @@ function Start () {
 
 function Update () {
 	LookSpeed= initialLookSpeed*mainCamera.camera.fieldOfView/60;
-	if (Input.GetAxis("X")) {
-		burst = 3;
-	}
-	else {
-		burst = 1;
-	}
 	var noRiseVector = transform.forward;
 	noRiseVector.y = 0;
-	transform.Translate(Vector3.up * Input.GetAxis("Triggers") * ElevationSpeed * burst * Time.deltaTime, Space.World);
-	transform.Translate(Vector3.right * Input.GetAxis("Left X") * MoveSpeed * burst * Time.deltaTime);
-	transform.Translate(noRiseVector * Input.GetAxis("Left Y") * MoveSpeed * burst * Time.deltaTime, Space.World);
-	transform.Rotate(Vector3.up * Input.acceleration.x * LookSpeed * Time.deltaTime);
-	transform.Rotate(Vector3.right * Input.acceleration.z* LookSpeed * Time.deltaTime);	
+	transform.Translate(Vector3.up * TS.elevate * ElevationSpeed * Time.deltaTime, Space.World);
+	transform.Translate(Vector3.right * TS.leftX * MoveSpeed * Time.deltaTime);
+	transform.Translate(noRiseVector * TS.leftY * MoveSpeed * Time.deltaTime, Space.World);
+	transform.Rotate(Vector3.up * TS.rightX * LookSpeed * Time.deltaTime);
+	transform.Rotate(Vector3.right * TS.rightY * LookSpeed * Time.deltaTime);	
 	transform.eulerAngles.z = 0;
 	if (transform.eulerAngles.x > MaxTilt && transform.eulerAngles.x < 340 - MaxTilt) {
 		transform.eulerAngles.x = MaxTilt;
