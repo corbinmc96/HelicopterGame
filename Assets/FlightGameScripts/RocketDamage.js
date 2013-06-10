@@ -27,9 +27,9 @@ function OnCollisionEnter () {
 				hitObjects[hitObjects.Count-1].GetComponent(EnemyHealth).health -= rocketDamage * (damageRadius - distance)/damageRadius;
 				//Debug.Log(hitObjects[hitObjects.Count-1]);
 				//Debug.Log(rocketDamage * (damageRadius - distance)/damageRadius);
-			} else if (hitObjects[hitObjects.Count-1].GetComponent(BigEnemyHealth)!=null) {
+			} else if (hitObjects[hitObjects.Count-1].GetComponent(ShipHealth)!=null) {
 				distance = (hitCollider.ClosestPointOnBounds(transform.position)-transform.position).magnitude;
-				hitObjects[hitObjects.Count-1].GetComponent(BigEnemyHealth).health -= rocketDamage * (damageRadius - distance)/damageRadius;
+				hitObjects[hitObjects.Count-1].GetComponent(ShipHealth).health -= rocketDamage * (damageRadius - distance)/damageRadius;
 				//Debug.Log(hitObjects[hitObjects.Count-1]);
 				//Debug.Log(rocketDamage * (damageRadius - distance)/damageRadius);
 			}
