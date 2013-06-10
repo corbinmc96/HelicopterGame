@@ -24,7 +24,7 @@ function OnGUI () {
             PlayerPrefs.SetFloat("BulletDamage",PlayerPrefs.GetFloat("BulletDamage",0)*1.2);
             PlayerPrefs.Save();
         } else if (GUI.Button(Rect(Screen.width/2-75,Screen.height/2+87.5,150,50),"Armor",upgradeMenuStyle) && enoughMoney()) {
-            PlayerPrefs.SetFloat("Armor",PlayerPrefs.GetFloat("Armor",0)*1.2);
+            PlayerPrefs.SetFloat("Armor",PlayerPrefs.GetFloat("Armor",100)*1.2);
             PlayerPrefs.Save();
         } else if (GUI.Button(Rect(Screen.width/2-75,Screen.height/2+162.5,150,50),"Main Menu",upgradeMenuStyle)) {
             whichMenu = "main";    

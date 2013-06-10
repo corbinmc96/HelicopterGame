@@ -31,13 +31,13 @@ function Update () {
 	if (transform.position.z > 8000) {
 		transform.position.z = 8000;
 	}
-	if (transform.position.z < 0) {
-		transform.position.z = 0;
+	if (transform.position.z < -500) {
+		transform.position.z = -500;
 	}
 	if (transform.position.x > 8000) {
 		transform.position.x = 8000;
 	}
-	if (transform.position.x < 0) {
-		transform.position.x = 0;
+	if (transform.position.x < -700) {
+		transform.position.x = -700;
 	}
 }
