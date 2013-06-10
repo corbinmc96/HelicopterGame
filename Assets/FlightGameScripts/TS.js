@@ -31,10 +31,10 @@ function Start () {
 	//records reference position of input.acceleration
 	startAccel = Input.acceleration;
 	//sets zone Areas
-	zone1 = Rect(Screen.width-3*cbs,0,cbs,cbs);
-	zone2 = Rect(Screen.width-1.5*cbs,0,cbs,cbs);
-	zone3 = Rect(Screen.width-3*cbs,1.5*cbs,cbs,cbs);
-	zone4 = Rect(Screen.width-1.5*cbs,1.5*cbs,cbs,cbs);
+	zone1 = Rect(Screen.width-3*cbs,0.5*cbs,cbs,cbs);
+	zone2 = Rect(Screen.width-1.5*cbs,0.5*cbs,cbs,cbs);
+	zone3 = Rect(Screen.width-3*cbs,2*cbs,cbs,cbs);
+	zone4 = Rect(Screen.width-1.5*cbs,2*cbs,cbs,cbs);
 	stickZone = Rect(0,0,4*cbs,3*cbs);
 }
 
