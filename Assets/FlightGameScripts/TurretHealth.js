@@ -28,9 +28,10 @@ function Dead () {
 	yield WaitForSeconds(0.2);
 	var expl1:GameObject = Instantiate(explosion1, explosionPosition.position, transform.rotation);
 	expl1.transform.parent = transform.parent;
-	yield WaitForSeconds(0.5);
+	yield WaitForSeconds(0.1);
 	var expl2:GameObject = Instantiate(explosion2, explosionPosition.position, transform.rotation);
 	expl2.transform.parent = transform.parent;
 	
+	yield WaitForSeconds(0.2);
 	Destroy(gameObject);
 }

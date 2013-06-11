@@ -12,6 +12,7 @@ var acceleration:int = 2;
 var turnAcceleration:int = 5;
 
 var shipFront:Transform;
+var tipPoint:Transform;
 
 private var switchTime:float = 0;
 
@@ -21,6 +22,17 @@ private var turnSpeed:float;
 private var intendedTurnSpeed:float;
 
 private var hit:RaycastHit;
+
+function objectAhead (distance:float) : boolean {
+	if (speed > 0) {
+		if (Physics.Raycast(tipPoint.position, transform.forward, hit, distance)) {
+			if (hit.transform.name != "Water" && hit.transform.name != "Terrain") {
+				return true;
+			}
+		}
+	}
+	return false;
+}
 
 function Update () {
 	intendedSpeed = maxSpeed;
@@ -34,6 +46,10 @@ function Update () {
 			//turn right
 			intendedTurnSpeed = maxTurnSpeed;
 		}
+		
+		if (shipFront.position.x > upperXBound+50 && Vector3.Angle(transform.forward, Vector3((upperXBound+lowerXBound)/2,transform.position.y,(upperZBound+lowerZBound)/2)-transform.position) > 45) {
+			intendedSpeed = 0;
+		}
 		switchTime = Time.time;
 		
 	} else if (shipFront.position.x < lowerXBound) {
@@ -44,6 +60,10 @@ function Update () {
 		} else {
 			//turn left
 			intendedTurnSpeed = -maxTurnSpeed;
+		}
+		
+		if (shipFront.position.x < lowerXBound-50 && Vector3.Angle(transform.forward, Vector3((upperXBound+lowerXBound)/2,transform.position.y,(upperZBound+lowerZBound)/2)-transform.position) > 45) {
+			intendedSpeed = 0;
 		}
 		switchTime = Time.time;
 		
@@ -57,6 +77,10 @@ function Update () {
 			//turn left
 			intendedTurnSpeed = -maxTurnSpeed;
 		}
+		
+		if (shipFront.position.z > upperZBound+50 && Vector3.Angle(transform.forward, Vector3((upperXBound+lowerXBound)/2,transform.position.y,(upperZBound+lowerZBound)/2)-transform.position) > 45) {
+			intendedSpeed = 0;
+		}
 		switchTime = Time.time;
 		
 		
@@ -69,22 +93,27 @@ function Update () {
 			//turn right
 			intendedTurnSpeed = maxTurnSpeed;
 		}
+		
+		if (shipFront.position.z < lowerZBound-50 && Vector3.Angle(transform.forward, Vector3((upperXBound+lowerXBound)/2,transform.position.y,(upperZBound+lowerZBound)/2)-transform.position) > 45) {
+			intendedSpeed = 0;
+		}
 		switchTime = Time.time;
 		
 		
 		
-	} else if (rigidbody.SweepTest(transform.forward, hit, speed * 3)) {
+	} else if (objectAhead(speed*3)) {
 		//object 3s or less in front of ship
-		if (hit.distance < speed) {
-			//object 1s in front of ship
-			intendedSpeed = 0;
-		}
-		if (Vector3.Angle(hit.transform.position-transform.position, transform.right) <= 90) {
-			//object is on right side
+		if (Vector3.Angle(-hit.normal, transform.right) <= 90) {
+			//turn left
 			intendedTurnSpeed = -maxTurnSpeed;
 		} else {
-			//object is on left side
+			//turn right
 			intendedTurnSpeed = maxTurnSpeed;
+		}
+		
+		if (objectAhead(speed)) {
+			//object 1s in front of ship
+			intendedSpeed = 0;
 		}
 		switchTime = Time.time;
 		

@@ -1,21 +1,9 @@
 #pragma strict
 
-private var leftTrack : MoveTrack;
-private var rightTrack : MoveTrack;
-
-private var leftTrackTransform : Transform;
-private var rightTrackTransform : Transform;
-
-
 var acceleration : float = 5;
-
-private var currentVelocity : float = 0;
-private var randomNumber : float;
+var turnAcceleration : float = 5;
 var maxSpeed : float = 25;
-var rotationSpeed : float = 30;
-
-var shellRange : float = 400;
-var maxTurretAngle : float = 45;
+var maxTurnSpeed : float = 30;
 
 var upperXBound : float;
 var lowerXBound : float;
@@ -25,6 +13,20 @@ var lowerZBound : float;
 var targetName : String;
 private var target : Transform;
 
+private var leftTrack : MoveTrack;
+private var rightTrack : MoveTrack;
+private var leftTrackTransform : Transform;
+private var rightTrackTransform : Transform;
+
+private var currentSpeed : float = 0;
+private var intendedSpeed : float;
+private var turnSpeed : float;
+private var intendedTurnSpeed : float;
+private var randomNumber : float;
+
+private var shellRange : float;
+private var maxTurretAngle : float;
+
 function Start() {
 	// Get Track Controls
 	leftTrackTransform = transform.Find("Lefttrack");
@@ -32,7 +34,9 @@ function Start() {
 	
 	leftTrack = leftTrackTransform.GetComponent(MoveTrack);
 	rightTrack = rightTrackTransform.GetComponent(MoveTrack);
-		
+	
+	shellRange = transform.Find("turret").Find("cannon").gameObject.GetComponent(MoveGun).firingDistance;
+	maxTurretAngle = transform.Find("turret").Find("cannon").gameObject.GetComponent(MoveGun).upperLimit;
 	target = GameObject.Find(targetName).transform;
 }
 
@@ -46,23 +50,116 @@ function isGrounded() : boolean {
 	return true;
 }
 
+function objectAhead() : boolean {
+	var hits = rigidbody.SweepTestAll(transform.forward, currentSpeed * 0.5);
+	if (hits.length > 0) {
+		for (var hit:RaycastHit in hits) {
+			if (hit.transform.name != "Terrain") {
+				return true;
+			}
+		}
+	}
+	hits = rigidbody.SweepTestAll(Quaternion.AngleAxis(45,transform.up) * transform.forward, currentSpeed * 0.5);
+	if (hits.length > 0) {
+		for (var hit:RaycastHit in hits) {
+			if (hit.transform.name != "Terrain") {
+				return true;
+			}
+		}
+	}
+	hits = rigidbody.SweepTestAll(Quaternion.AngleAxis(-45,transform.up) * transform.forward, currentSpeed * 0.5);
+	if (hits.length > 0) {
+		for (var hit:RaycastHit in hits) {
+			if (hit.transform.name != "Terrain") {
+				return true;
+			}
+		}
+	}
+	return false;
+}
+
 function Update () {
 	var directionVector : Vector3 = target.position - transform.position;
 	var horizontalVector : Vector3 = directionVector;
 	horizontalVector.y = 0;
 	
 	//determine direction of tank
-	var hit : RaycastHit;
 	if (isGrounded()) {
-		if (transform.position.x > upperXBound || transform.position.x < lowerXBound || transform.position.z > upperZBound || transform.position.z < lowerZBound) {
-			//tank out of bounds
-			if (Vector3.Angle(transform.forward, Vector3((upperXBound+lowerXBound)/2,0,(upperZBound+lowerZBound)/2)-transform.position) > 30) {
-				transform.Rotate(0,rotationSpeed * Time.deltaTime,0);
+		var hit : RaycastHit;
+		intendedSpeed = maxSpeed;
+		
+		if (transform.position.x > upperXBound) {
+			//tank is out of bounds
+			if (Vector3.Angle(transform.forward, Vector3(0,0,1)) <= 90) {
+				//turn left
+				intendedTurnSpeed = -maxTurnSpeed;
+			} else {
+				//turn right
+				intendedTurnSpeed = maxTurnSpeed;
 			}
-		} else if (!(rigidbody.SweepTest(transform.forward, hit, currentVelocity * 0.5) 
-			|| rigidbody.SweepTest(Quaternion.AngleAxis(45,transform.up) * transform.forward, hit, currentVelocity * 0.5) 
-			|| rigidbody.SweepTest(Quaternion.AngleAxis(-45,transform.up) * transform.forward, hit, currentVelocity * 0.5))) {
-			//nothing 1/2 second ahead of tank
+			
+			if (transform.position.x > upperXBound+50 && Vector3.Angle(transform.forward, Vector3((upperXBound+lowerXBound)/2,transform.position.y,(upperZBound+lowerZBound)/2)-transform.position) > 45) {
+				intendedSpeed = 0;
+			}
+			
+		} else if (transform.position.x < lowerXBound) {
+			//tank is out of bounds
+			if (Vector3.Angle(transform.forward, Vector3(0,0,1)) <= 90) {
+				//turn right
+				intendedTurnSpeed = maxTurnSpeed;
+			} else {
+				//turn left
+				intendedTurnSpeed = -maxTurnSpeed;
+			}
+			
+			if (transform.position.x < lowerXBound-50 && Vector3.Angle(transform.forward, Vector3((upperXBound+lowerXBound)/2,transform.position.y,(upperZBound+lowerZBound)/2)-transform.position) > 45) {
+				intendedSpeed = 0;
+			}
+			
+			
+		} else if (transform.position.z > upperZBound) {
+			//tank is out of bounds
+			if (Vector3.Angle(transform.forward, Vector3(1,0,0)) <= 90) {
+				//turn right
+				intendedTurnSpeed = maxTurnSpeed;
+			} else {
+				//turn left
+				intendedTurnSpeed = -maxTurnSpeed;
+			}
+			
+			if (transform.position.z > upperZBound+50 && Vector3.Angle(transform.forward, Vector3((upperXBound+lowerXBound)/2,transform.position.y,(upperZBound+lowerZBound)/2)-transform.position) > 45) {
+				intendedSpeed = 0;
+			}
+			
+			
+		} else if (transform.position.z < lowerZBound) {
+			//tank is out of bounds
+			if (Vector3.Angle(transform.forward, Vector3(1,0,0)) <= 90) {
+				//turn left
+				intendedTurnSpeed = -maxTurnSpeed;
+			} else {
+				//turn right
+				intendedTurnSpeed = maxTurnSpeed;
+			}
+			
+			if (transform.position.z < lowerZBound-50 && Vector3.Angle(transform.forward, Vector3((upperXBound+lowerXBound)/2,transform.position.y,(upperZBound+lowerZBound)/2)-transform.position) > 45) {
+				intendedSpeed = 0;
+			}
+
+		} else if (objectAhead()) {
+			//something blocking tank's path
+			
+			if (rigidbody.SweepTest(Quaternion.AngleAxis(45,transform.up) * transform.forward, hit, currentSpeed * 0.5)) {
+				//object to the right
+				//rotate left
+				intendedTurnSpeed = -maxTurnSpeed;
+			} else {
+				//rotate right
+				intendedTurnSpeed = maxTurnSpeed;
+			}
+		
+		} else {
+			//proceed normally
 			
 			if (directionVector.magnitude <= shellRange && Mathf.Atan(directionVector.y/horizontalVector.magnitude)*180/Mathf.PI <= maxTurretAngle) {
 				//helicopter is in range
@@ -70,17 +167,17 @@ function Update () {
 				if (Vector3.Angle(transform.right, horizontalVector) < 90) {
 					//helicopter is to the right of the tank
 					randomNumber = Random.value * 1.2 - 0.2;
-					transform.Rotate(0,randomNumber * rotationSpeed * Time.deltaTime,0);
+					intendedTurnSpeed = randomNumber * maxTurnSpeed;
 				} else if (Vector3.Angle(transform.right, horizontalVector) > 90) {
 					//helicopter is to the left of the tank
 					randomNumber = Random.value * 1.2 - 1;
-					transform.Rotate(0,randomNumber * rotationSpeed * Time.deltaTime,0);
+					intendedTurnSpeed = randomNumber * maxTurnSpeed;
 				} else if (Vector3.Angle(transform.forward, horizontalVector) == 0) {
 					//helicopter is directly in front
-					transform.Rotate(0,rotationSpeed * Time.deltaTime,0);
+					intendedTurnSpeed = maxTurnSpeed;
 				} else {
 					//helicopter is directly in back
-					transform.Rotate(0,rotationSpeed * Time.deltaTime,0);
+					intendedTurnSpeed = maxTurnSpeed;
 				}
 			} else if (Mathf.Atan(directionVector.y/horizontalVector.magnitude)*180/Mathf.PI > maxTurretAngle) {
 				//underneath the helicopter
@@ -88,13 +185,13 @@ function Update () {
 				
 				if (Vector3.Angle(transform.right, horizontalVector) < 90) {
 					//helicopter is to the right of the tank
-					transform.Rotate(0,-rotationSpeed * Time.deltaTime,0);
+					intendedTurnSpeed = -maxTurnSpeed;
 				} else if (Vector3.Angle(transform.right, horizontalVector) > 90) {
 					//helicopter is to the left of the tank
-					transform.Rotate(0,rotationSpeed * Time.deltaTime,0);
+					intendedTurnSpeed = maxTurnSpeed;
 				} else if (Vector3.Angle(transform.forward, horizontalVector) == 0) {
 					//helicopter is directly in front
-					transform.Rotate(0,rotationSpeed * Time.deltaTime,0);
+					intendedTurnSpeed = maxTurnSpeed;
 				} else {
 					//helicopter is directly in back
 					//don't need to turn
@@ -107,82 +204,59 @@ function Update () {
 				
 				if (Vector3.Angle(transform.right, horizontalVector) < 90) {
 					//helicopter is to the right of the tank
-					transform.Rotate(0,rotationSpeed * Time.deltaTime,0);
+					intendedTurnSpeed = maxTurnSpeed;
 				} else if (Vector3.Angle(transform.right, horizontalVector) > 90) {
 					//helicopter is to the left of the tank
-					transform.Rotate(0,-rotationSpeed * Time.deltaTime,0);
+					intendedTurnSpeed = -maxTurnSpeed;
 				} else if (Vector3.Angle(transform.forward, horizontalVector) == 0) {
 					//helicopter is directly in front
 					//don't need to turn
 				} else {
 					//helicopter is directly in back
-					transform.Rotate(0,rotationSpeed * Time.deltaTime,0);
+					intendedTurnSpeed = maxTurnSpeed;
 				}
 
 			}
-		} else {
-			//something blocking tank's path
-			
-			if (rigidbody.SweepTest(Quaternion.AngleAxis(45,transform.up) * transform.forward, hit, currentVelocity * 0.5)) {
-				//object to the right
-				//rotate left
-				transform.Rotate(0,-rotationSpeed * Time.deltaTime,0);
-			} else {
-				//rotate right
-				transform.Rotate(0,rotationSpeed * Time.deltaTime,0);
-			}
 		}
-	}
-	//calculate angle of traveled vector
-	// var moveDistance : float = currentVelocity * Time.deltaTime;
-	// var terrainAngle : float = 0;
-	// var verticalDistance : float = 0;
-	// var distanceTraveled : float = 0;
-	// horizontalVector = transform.forward;
-	// horizontalVector.y = 0;
-	// horizontalVector = horizontalVector.normalized;
 	
-	// if (moveDistance) {
-		// for (var horizontalDistance : float = moveDistance/1000; horizontalDistance<=moveDistance; horizontalDistance+=moveDistance/1000) {
-			// verticalDistance = terrain.SampleHeight(transform.position + horizontalDistance * horizontalVector) - terrain.SampleHeight(transform.position);
-			// distanceTraveled = Mathf.Sqrt(Mathf.Pow(verticalDistance, 2) + Mathf.Pow(horizontalDistance, 2));
-			// if (distanceTraveled > moveDistance) {
-				// break;
-			// }
-			// terrainAngle = Mathf.Atan(verticalDistance/horizontalDistance)*180/Mathf.PI;
-		// }
-	// }	
-	// Physics.Raycast(transform.position, Vector3.down, hit);
-	// transform.rotation = Quaternion.LookRotation(Quaternion.AngleAxis(terrainAngle, Vector3.right) * horizontalVector, hit.normal);
-	
-	
-	//move tank forward if grounded
-	if (isGrounded()) {
+		//move tank forward
 		//adjust acceleration
-		if (currentVelocity < maxSpeed) {
-			currentVelocity += acceleration * Time.deltaTime;
-			if (currentVelocity > maxSpeed) {
-				currentVelocity = maxSpeed;
-			}
+		if (Mathf.Abs(currentSpeed-intendedSpeed) <= acceleration*Time.deltaTime) {
+			currentSpeed = intendedSpeed;
+		} else if (currentSpeed > intendedSpeed) {
+			currentSpeed -= acceleration*Time.deltaTime;
+		} else if (currentSpeed < intendedSpeed) {
+			currentSpeed += acceleration*Time.deltaTime;
 		}
+		
+		if (Mathf.Abs(turnSpeed-intendedTurnSpeed) <= turnAcceleration*Time.deltaTime) {
+			turnSpeed = intendedTurnSpeed;
+		} else if (turnSpeed > intendedTurnSpeed) {
+			turnSpeed -= turnAcceleration*Time.deltaTime;
+		} else if (turnSpeed < intendedTurnSpeed) {
+			turnSpeed += turnAcceleration*Time.deltaTime;
+		}
+		
 		//move tank
-		transform.Translate(0,0,currentVelocity * Time.deltaTime);
+		transform.Rotate(0, turnSpeed * Time.deltaTime, 0);
+		transform.Translate(0,0,currentSpeed * Time.deltaTime);
 	} else {
-		currentVelocity = 0;
+		//tank not grounded
+		currentSpeed -= acceleration * Time.deltaTime;
 	}
 	
-	// Move Tracks by currentVelocity	 
-	if (currentVelocity > 0) {
+	// Move Tracks by currentSpeed	 
+	if (currentSpeed > 0) {
 		// Move forward
-		leftTrack.speed = currentVelocity;
+		leftTrack.speed = currentSpeed;
 		leftTrack.GearStatus = 1;
-		rightTrack.speed = currentVelocity;
+		rightTrack.speed = currentSpeed;
 		rightTrack.GearStatus = 1;
-	} else if (currentVelocity < 0)	{
+	} else if (currentSpeed < 0)	{
 		// Move Backward
-		leftTrack.speed = -currentVelocity;
+		leftTrack.speed = -currentSpeed;
 		leftTrack.GearStatus = 2;
-		rightTrack.speed = -currentVelocity;
+		rightTrack.speed = -currentSpeed;
 		rightTrack.GearStatus = 2;
 	} else {
 		// No Move
