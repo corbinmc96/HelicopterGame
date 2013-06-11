@@ -10,6 +10,7 @@ var button3 : Texture2D; //down
 private var zone3 : Rect;
 var button4 : Texture2D; //up
 private var zone4 : Rect;
+var joystick : Texture2D;
 private var stickZone : Rect;
 
 
@@ -35,7 +36,7 @@ function Start () {
 	zone2 = Rect(Screen.width-1.5*cbs,0.5*cbs,cbs,cbs);
 	zone3 = Rect(Screen.width-3*cbs,2*cbs,cbs,cbs);
 	zone4 = Rect(Screen.width-1.5*cbs,2*cbs,cbs,cbs);
-	stickZone = Rect(0,0,4*cbs,3*cbs);
+	stickZone = Rect(0,0,3*cbs,3*cbs);
 }
 
 function Update () {
@@ -93,4 +94,6 @@ function OnGUI () {
 	GUI.DrawTexture(Rect(Screen.width-3*cbs,Screen.height-3*cbs,cbs,cbs),button3);
 	//draw button4
 	GUI.DrawTexture(Rect(Screen.width-1.5*cbs,Screen.height-3*cbs,cbs,cbs),button4);
+	//draw joystick
+	GUI.DrawTexture(Rect(0,Screen.height-3*cbs,3*cbs,3*cbs),joystick);
 }
