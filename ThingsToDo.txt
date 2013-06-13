@@ -3,11 +3,13 @@ Sugested Additions:
 x Upgrades (reserved by corbin)
 x Money (and this too)
 Ally
-Enemy heli
 Instructions
 Objectives optional
 Time restraint
-More enemies
-More clustering
 x Menu
 x Loop at end
+
+Aaron is working on/will work on: (If there is something else you want me to do, put it on this list)
+Enemy heli
+More enemies
+More clustering
