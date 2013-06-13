@@ -10,6 +10,8 @@ var lowerXBound : float;
 var upperZBound : float;
 var lowerZBound : float;
 
+var separationDistance : float = 30;
+
 var targetName : String;
 private var target : Transform;
 
@@ -54,7 +56,7 @@ function objectAhead() : boolean {
 	var hits = rigidbody.SweepTestAll(transform.forward, currentSpeed * 0.5);
 	if (hits.length > 0) {
 		for (var hit:RaycastHit in hits) {
-			if (hit.transform.name != "Terrain") {
+			if (hit.transform.root.tag != "Ground" && hit.transform.root.tag != "Projectile") {
 				return true;
 			}
 		}
@@ -62,7 +64,7 @@ function objectAhead() : boolean {
 	hits = rigidbody.SweepTestAll(Quaternion.AngleAxis(45,transform.up) * transform.forward, currentSpeed * 0.5);
 	if (hits.length > 0) {
 		for (var hit:RaycastHit in hits) {
-			if (hit.transform.name != "Terrain") {
+			if (hit.transform.root.tag != "Ground" && hit.transform.root.tag != "Projectile") {
 				return true;
 			}
 		}
@@ -70,9 +72,30 @@ function objectAhead() : boolean {
 	hits = rigidbody.SweepTestAll(Quaternion.AngleAxis(-45,transform.up) * transform.forward, currentSpeed * 0.5);
 	if (hits.length > 0) {
 		for (var hit:RaycastHit in hits) {
-			if (hit.transform.name != "Terrain") {
+			if (hit.transform.root.tag != "Ground" && hit.transform.root.tag != "Projectile") {
 				return true;
 			}
+		}
+	}
+	return false;
+}
+
+function nearestTank ():Transform {
+	var enemies = GameObject.FindGameObjectsWithTag("Enemy");
+	System.Array.Sort(enemies, function (a:GameObject, b:GameObject) (transform.position-a.transform.position).sqrMagnitude.CompareTo((transform.position-b.transform.position).sqrMagnitude));
+	for (var enemy in enemies) {
+		if (enemy.name == "P3J_model_track_prefab") {
+			return enemy.transform;
+		}
+	}
+	return null;
+}
+
+function tankWithinDistance (d:int):boolean {
+	var hits = Physics.OverlapSphere(transform.position, d);
+	for (var hitCollider in hits) {
+		if (hitCollider.transform.root.name == "P3J_model_track_prefab") {
+			return true;
 		}
 	}
 	return false;
@@ -158,17 +181,28 @@ function Update () {
 				intendedTurnSpeed = maxTurnSpeed;
 			}
 		
+		} else if (!tankWithinDistance(separationDistance) && nearestTank()) {
+			//find other tank
+			var targetTank = nearestTank();
+			
+			if (Vector3.Angle(transform.right, targetTank.position-transform.position) < 90) {
+				//closest tank on the right, turn right
+				intendedTurnSpeed = maxTurnSpeed;
+			} else {
+				//closest tank on the left, turn left
+				intendedTurnSpeed = -maxTurnSpeed;
+			}
+			
 		} else {
 			//proceed normally
-			
 			if (directionVector.magnitude <= shellRange && Mathf.Atan(directionVector.y/horizontalVector.magnitude)*180/Mathf.PI <= maxTurretAngle) {
 				//helicopter is in range
 				
-				if (Vector3.Angle(transform.right, horizontalVector) < 90) {
+				if (Vector3.Angle(transform.right, directionVector) < 90) {
 					//helicopter is to the right of the tank
 					randomNumber = Random.value * 1.2 - 0.2;
 					intendedTurnSpeed = randomNumber * maxTurnSpeed;
-				} else if (Vector3.Angle(transform.right, horizontalVector) > 90) {
+				} else if (Vector3.Angle(transform.right, directionVector) > 90) {
 					//helicopter is to the left of the tank
 					randomNumber = Random.value * 1.2 - 1;
 					intendedTurnSpeed = randomNumber * maxTurnSpeed;
@@ -179,14 +213,14 @@ function Update () {
 					//helicopter is directly in back
 					intendedTurnSpeed = maxTurnSpeed;
 				}
-			} else if (Mathf.Atan(directionVector.y/horizontalVector.magnitude)*180/Mathf.PI > maxTurretAngle) {
+			} else if (Mathf.Atan(directionVector.y/directionVector.magnitude)*180/Mathf.PI > maxTurretAngle) {
 				//underneath the helicopter
 				//go away from helicopter
 				
-				if (Vector3.Angle(transform.right, horizontalVector) < 90) {
+				if (Vector3.Angle(transform.right, directionVector) < 90) {
 					//helicopter is to the right of the tank
 					intendedTurnSpeed = -maxTurnSpeed;
-				} else if (Vector3.Angle(transform.right, horizontalVector) > 90) {
+				} else if (Vector3.Angle(transform.right, directionVector) > 90) {
 					//helicopter is to the left of the tank
 					intendedTurnSpeed = maxTurnSpeed;
 				} else if (Vector3.Angle(transform.forward, horizontalVector) == 0) {
@@ -202,13 +236,13 @@ function Update () {
 				//out of range
 				//go toward the helicopter
 				
-				if (Vector3.Angle(transform.right, horizontalVector) < 90) {
+				if (Vector3.Angle(transform.right, directionVector) < 90) {
 					//helicopter is to the right of the tank
 					intendedTurnSpeed = maxTurnSpeed;
-				} else if (Vector3.Angle(transform.right, horizontalVector) > 90) {
+				} else if (Vector3.Angle(transform.right, directionVector) > 90) {
 					//helicopter is to the left of the tank
 					intendedTurnSpeed = -maxTurnSpeed;
-				} else if (Vector3.Angle(transform.forward, horizontalVector) == 0) {
+				} else if (Vector3.Angle(transform.forward, directionVector) == 0) {
 					//helicopter is directly in front
 					//don't need to turn
 				} else {
@@ -242,7 +276,14 @@ function Update () {
 		transform.Translate(0,0,currentSpeed * Time.deltaTime);
 	} else {
 		//tank not grounded
-		currentSpeed -= acceleration * Time.deltaTime;
+		intendedSpeed = 0;
+		if (Mathf.Abs(currentSpeed-intendedSpeed) <= acceleration*Time.deltaTime) {
+			currentSpeed = intendedSpeed;
+		} else if (currentSpeed > intendedSpeed) {
+			currentSpeed -= acceleration*Time.deltaTime;
+		} else if (currentSpeed < intendedSpeed) {
+			currentSpeed += acceleration*Time.deltaTime;
+		}
 	}
 	
 	// Move Tracks by currentSpeed	 
