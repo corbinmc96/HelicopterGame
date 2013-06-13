@@ -43,10 +43,10 @@ function Start() {
 }
 
 function isGrounded() : boolean {
-	if (!Physics.Raycast(leftTrackTransform.collider.bounds.center, -transform.up, leftTrackTransform.collider.bounds.extents.y + 0.1)) {
+	if (!Physics.Raycast(leftTrackTransform.collider.bounds.center, -transform.up, leftTrackTransform.collider.bounds.extents.y + 0.3)) {
 		return false;
 	}
-	if (!Physics.Raycast(rightTrackTransform.collider.bounds.center, -transform.up, rightTrackTransform.collider.bounds.extents.y + 0.1)) {
+	if (!Physics.Raycast(rightTrackTransform.collider.bounds.center, -transform.up, rightTrackTransform.collider.bounds.extents.y + 0.3)) {
 		return false;
 	}
 	return true;
@@ -113,7 +113,11 @@ function Update () {
 		
 		if (transform.position.x > upperXBound) {
 			//tank is out of bounds
-			if (Vector3.Angle(transform.forward, Vector3(0,0,1)) <= 90) {
+			
+			if (Vector3.Angle(transform.forward, Vector3(-1,0,0)) <= 30) {
+				//correct direction
+				intendedTurnSpeed = 0;
+			} else if (Vector3.Angle(transform.forward, Vector3(0,0,1)) <= 45) {
 				//turn left
 				intendedTurnSpeed = -maxTurnSpeed;
 			} else {
@@ -127,7 +131,10 @@ function Update () {
 			
 		} else if (transform.position.x < lowerXBound) {
 			//tank is out of bounds
-			if (Vector3.Angle(transform.forward, Vector3(0,0,1)) <= 90) {
+			if (Vector3.Angle(transform.forward, Vector3(1,0,0)) <= 30) {
+				//correct direction
+				intendedTurnSpeed = 0;
+			} else if (Vector3.Angle(transform.forward, Vector3(0,0,1)) <= 90) {
 				//turn right
 				intendedTurnSpeed = maxTurnSpeed;
 			} else {
@@ -142,7 +149,10 @@ function Update () {
 			
 		} else if (transform.position.z > upperZBound) {
 			//tank is out of bounds
-			if (Vector3.Angle(transform.forward, Vector3(1,0,0)) <= 90) {
+			if (Vector3.Angle(transform.forward, Vector3(0,0,-1)) <= 30) {
+				//correct direction
+				intendedTurnSpeed = 0;
+			} else if (Vector3.Angle(transform.forward, Vector3(1,0,0)) <= 90) {
 				//turn right
 				intendedTurnSpeed = maxTurnSpeed;
 			} else {
@@ -157,7 +167,10 @@ function Update () {
 			
 		} else if (transform.position.z < lowerZBound) {
 			//tank is out of bounds
-			if (Vector3.Angle(transform.forward, Vector3(1,0,0)) <= 90) {
+			if (Vector3.Angle(transform.forward, Vector3(0,0,1)) <= 30) {
+				//correct direction
+				intendedTurnSpeed = 0;
+			} else if (Vector3.Angle(transform.forward, Vector3(1,0,0)) <= 90) {
 				//turn left
 				intendedTurnSpeed = -maxTurnSpeed;
 			} else {
@@ -185,7 +198,10 @@ function Update () {
 			//find other tank
 			var targetTank = nearestTank();
 			
-			if (Vector3.Angle(transform.right, targetTank.position-transform.position) < 90) {
+			if (Vector3.Angle(transform.forward, targetTank.position-transform.position) <= 30) {
+				//correct direction
+				intendedTurnSpeed = 0;
+			} else if (Vector3.Angle(transform.right, targetTank.position-transform.position) < 90) {
 				//closest tank on the right, turn right
 				intendedTurnSpeed = maxTurnSpeed;
 			} else {
