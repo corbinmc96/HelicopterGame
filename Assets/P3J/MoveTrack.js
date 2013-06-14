@@ -10,8 +10,7 @@ var moveTick : float = 0.1;
 
 var GearStatus : int = 0;
 
-
-function Update () {		
+function Update () {
 	switch (GearStatus) {
 		case 0 : 
 			// Neutral. do nothing

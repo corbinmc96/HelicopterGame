@@ -1,7 +1,7 @@
 #pragma strict
 
 var acceleration : float = 5;
-var turnAcceleration : float = 5;
+var turnAcceleration : float = 15;
 var maxSpeed : float = 25;
 var maxTurnSpeed : float = 30;
 
@@ -29,6 +29,8 @@ private var randomNumber : float;
 private var shellRange : float;
 private var maxTurretAngle : float;
 
+private var hit:RaycastHit;
+
 function Start() {
 	// Get Track Controls
 	leftTrackTransform = transform.Find("Lefttrack");
@@ -43,10 +45,37 @@ function Start() {
 }
 
 function isGrounded() : boolean {
-	if (!Physics.Raycast(leftTrackTransform.collider.bounds.center, -transform.up, leftTrackTransform.collider.bounds.extents.y + 0.3)) {
+	var leftTrackGrounded:boolean = false;
+	var rightTrackGrounded:boolean = false;
+	
+	var firstStartPoint:Vector3 = leftTrack.collider.bounds.center + leftTrack.collider.bounds.extents.z * transform.forward + leftTrack.collider.bounds.extents.y * -transform.up + leftTrack.collider.bounds.extents.x * -transform.right;
+	var firstEndPoint:Vector3 = leftTrack.collider.bounds.center + leftTrack.collider.bounds.extents.z * -transform.forward + leftTrack.collider.bounds.extents.y * -transform.up + leftTrack.collider.bounds.extents.x * -transform.right;
+
+	for (var i:int = 0; i<=10; i++) {
+		if (Physics.Linecast(firstStartPoint + i/10.0*(2*leftTrack.collider.bounds.extents.x) * transform.right, firstEndPoint + i/10.0*(2*leftTrack.collider.bounds.extents.x) * transform.right, hit)) {
+			if (hit.transform.root.tag == "Ground") {
+				leftTrackGrounded = true;
+				break;
+			}
+		}
+	}
+	firstStartPoint = rightTrack.collider.bounds.center + rightTrack.collider.bounds.extents.z * transform.forward + rightTrack.collider.bounds.extents.y * -transform.up + rightTrack.collider.bounds.extents.x * -transform.right;
+	firstEndPoint = rightTrack.collider.bounds.center + rightTrack.collider.bounds.extents.z * -transform.forward + rightTrack.collider.bounds.extents.y * -transform.up + rightTrack.collider.bounds.extents.x * -transform.right;
+
+	for (i = 0; i<=10; i++) {
+		if (Physics.Linecast(firstStartPoint + i/10.0*(2*rightTrack.collider.bounds.extents.x) * transform.right, firstEndPoint + i/10.0*(2*rightTrack.collider.bounds.extents.x) * transform.right, hit)) {
+			if (hit.transform.root.tag == "Ground") {
+				rightTrackGrounded = true;
+				break;
+			}
+		}
+	}
+	
+	
+	if (!leftTrackGrounded) {
 		return false;
 	}
-	if (!Physics.Raycast(rightTrackTransform.collider.bounds.center, -transform.up, rightTrackTransform.collider.bounds.extents.y + 0.3)) {
+	if (!rightTrackGrounded) {
 		return false;
 	}
 	return true;
@@ -106,6 +135,7 @@ function Update () {
 	var horizontalVector : Vector3 = directionVector;
 	horizontalVector.y = 0;
 	
+	Debug.Log(isGrounded());
 	//determine direction of tank
 	if (isGrounded()) {
 		var hit : RaycastHit;
