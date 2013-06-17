@@ -13,7 +13,7 @@ var upperZBound : float;
 var lowerZBound : float;
 
 var separationDistance : float = 30;
-var responseDistance : float = 300;
+var responseDistanceToRange : float = 2;
 var randomSwitchTime : float = 5;
 
 var targetName : String;
@@ -32,6 +32,7 @@ private var randomNumber : float;
 
 private var lastFrameWasRandom : boolean = false;
 private var lastRotationSwitch : float;
+private var lastWaterAhead : float;
 
 private var shellRange : float;
 private var maxTurretAngle : float;
@@ -51,6 +52,9 @@ function Start() {
 	target = GameObject.Find(targetName).transform;
 	
 	lastRotationSwitch = Time.time - randomSwitchTime;
+	lastWaterAhead = Time.time - 4;
+	
+	transform.position.y = Terrain.activeTerrain.SampleHeight(transform.position)-100 + 5;
 }
 
 function isGrounded() : boolean {
@@ -95,32 +99,36 @@ function isGrounded() : boolean {
 	return true;
 }
 
-function objectAhead() : boolean {
-	var hits = rigidbody.SweepTestAll(transform.forward, currentSpeed * currentSpeed/acceleration);
-	if (hits.length > 0) {
+function waterAhead ():boolean {
+	var castPoint:Vector3 = transform.position;
+	
+	var hits:RaycastHit[];
+	for (var t:float = 0; t<currentSpeed/acceleration+3; t+=0.2) {
+		castPoint = castPoint + Quaternion.AngleAxis(t*turnSpeed, Vector3.up)*transform.forward*0.2*currentSpeed;
+		castPoint.y = 500;
+		hits = Physics.RaycastAll(castPoint, -Vector3.up);
+		
+		System.Array.Sort(hits, function (a:RaycastHit, b:RaycastHit) a.distance.CompareTo(b.distance));
 		for (var hit:RaycastHit in hits) {
-			if (hit.transform.root.tag != "Ground" && hit.transform.root.tag != "Projectile") {
-				return true;
-			}
-		}
-	}
-	hits = rigidbody.SweepTestAll(Quaternion.AngleAxis(45,transform.up) * transform.forward, currentSpeed * currentSpeed/acceleration);
-	if (hits.length > 0) {
-		for (var hit:RaycastHit in hits) {
-			if (hit.transform.root.tag != "Ground" && hit.transform.root.tag != "Projectile") {
-				return true;
-			}
-		}
-	}
-	hits = rigidbody.SweepTestAll(Quaternion.AngleAxis(-45,transform.up) * transform.forward, currentSpeed * currentSpeed/acceleration);
-	if (hits.length > 0) {
-		for (var hit:RaycastHit in hits) {
-			if (hit.transform.root.tag != "Ground" && hit.transform.root.tag != "Projectile") {
+			if (hit.transform.root.name == "Terrain") {
+				break;
+			} else if (hit.transform.root.name == "Water") {
 				return true;
 			}
 		}
 	}
 	return false;
+}
+
+function objectAhead() : Collider {
+	var hits = Physics.OverlapSphere(transform.position, currentSpeed * currentSpeed/acceleration + 10);
+	System.Array.Sort(hits, function (a:Collider, b:Collider) (transform.position-a.transform.position).sqrMagnitude.CompareTo((transform.position-b.transform.position).sqrMagnitude));
+	for (var hit:Collider in hits) {
+		if (hit.transform.root.tag != "Ground" && hit.transform.root.tag != "Projectile" && hit.transform.root!=transform && Vector3.Angle(transform.forward, hit.transform.position-transform.position) < 45) {
+			return hit;
+		}
+	}
+	return null;
 }
 
 function nearestTank ():Transform {
@@ -157,9 +165,36 @@ function Update () {
 	if (isGrounded()) {
 		intendedSpeed = maxSpeed;
 		
-		if (transform.position.x > upperXBound) {
+		if (waterAhead()) {
+			//about to go in the water
+			//Debug.Log("water ahead", gameObject);
+			
+			lastWaterAhead = Time.time;
+			
+			if (transform.forward.z > transform.forward.x) {
+				//turn right
+				intendedTurnSpeed = maxTurnSpeed;
+			} else {
+				//turn left
+				intendedTurnSpeed = -maxTurnSpeed;
+			}
+			
+		} else if (Time.time-lastWaterAhead < 4) {
+			//turning away from water
+			//Debug.Log("near water", gameObject);
+			
+			if (transform.forward.z > transform.forward.x) {
+				//turn right
+				intendedTurnSpeed = maxTurnSpeed;
+			} else {
+				//turn left
+				intendedTurnSpeed = -maxTurnSpeed;
+			}
+
+			
+		} else if (transform.position.x > upperXBound) {
 			//tank is out of bounds
-			Debug.Log("out of bounds", gameObject);
+			//Debug.Log("out of bounds", gameObject);
 			
 			if (Vector3.Angle(transform.forward, Vector3(-1,0,0)) <= 30) {
 				//correct direction
@@ -172,13 +207,13 @@ function Update () {
 				intendedTurnSpeed = maxTurnSpeed;
 			}
 			
-			if (transform.position.x > upperXBound+50 && Vector3.Angle(transform.forward, Vector3((upperXBound+lowerXBound)/2,transform.position.y,(upperZBound+lowerZBound)/2)-transform.position) > 45) {
-				intendedSpeed = 0;
-			}
+			//if (transform.position.x > upperXBound+50 && Vector3.Angle(transform.forward, Vector3((upperXBound+lowerXBound)/2,transform.position.y,(upperZBound+lowerZBound)/2)-transform.position) > 45) {
+			//	intendedSpeed = 0;
+			//}
 			
 		} else if (transform.position.x < lowerXBound) {
 			//tank is out of bounds
-			Debug.Log("out of bounds", gameObject);
+			//Debug.Log("out of bounds", gameObject);
 			
 			if (Vector3.Angle(transform.forward, Vector3(1,0,0)) <= 30) {
 				//correct direction
@@ -191,14 +226,14 @@ function Update () {
 				intendedTurnSpeed = -maxTurnSpeed;
 			}
 			
-			if (transform.position.x < lowerXBound-50 && Vector3.Angle(transform.forward, Vector3((upperXBound+lowerXBound)/2,transform.position.y,(upperZBound+lowerZBound)/2)-transform.position) > 45) {
-				intendedSpeed = 0;
-			}
+			// if (transform.position.x < lowerXBound-50 && Vector3.Angle(transform.forward, Vector3((upperXBound+lowerXBound)/2,transform.position.y,(upperZBound+lowerZBound)/2)-transform.position) > 45) {
+				// intendedSpeed = 0;
+			// }
 			
 			
 		} else if (transform.position.z > upperZBound) {
 			//tank is out of bounds
-			Debug.Log("out of bounds", gameObject);
+			//Debug.Log("out of bounds", gameObject);
 			
 			if (Vector3.Angle(transform.forward, Vector3(0,0,-1)) <= 30) {
 				//correct direction
@@ -211,14 +246,14 @@ function Update () {
 				intendedTurnSpeed = -maxTurnSpeed;
 			}
 			
-			if (transform.position.z > upperZBound+50 && Vector3.Angle(transform.forward, Vector3((upperXBound+lowerXBound)/2,transform.position.y,(upperZBound+lowerZBound)/2)-transform.position) > 45) {
-				intendedSpeed = 0;
-			}
+			// if (transform.position.z > upperZBound+50 && Vector3.Angle(transform.forward, Vector3((upperXBound+lowerXBound)/2,transform.position.y,(upperZBound+lowerZBound)/2)-transform.position) > 45) {
+				// intendedSpeed = 0;
+			// }
 			
 			
 		} else if (transform.position.z < lowerZBound) {
 			//tank is out of bounds
-			Debug.Log("out of bounds", gameObject);
+			//Debug.Log("out of bounds", gameObject);
 			
 			if (Vector3.Angle(transform.forward, Vector3(0,0,1)) <= 30) {
 				//correct direction
@@ -231,15 +266,19 @@ function Update () {
 				intendedTurnSpeed = maxTurnSpeed;
 			}
 			
-			if (transform.position.z < lowerZBound-50 && Vector3.Angle(transform.forward, Vector3((upperXBound+lowerXBound)/2,transform.position.y,(upperZBound+lowerZBound)/2)-transform.position) > 45) {
-				intendedSpeed = 0;
-			}
-
+			// if (transform.position.z < lowerZBound-50 && Vector3.Angle(transform.forward, Vector3((upperXBound+lowerXBound)/2,transform.position.y,(upperZBound+lowerZBound)/2)-transform.position) > 45) {
+				// intendedSpeed = 0;
+			// }
+		
 		} else if (objectAhead()) {
 			//something blocking tank's path
-			Debug.Log("object ahead", gameObject);
+			//Debug.Log("object ahead", gameObject);
 			
-			if (rigidbody.SweepTest(Quaternion.AngleAxis(45,transform.up) * transform.forward, hit, currentSpeed * currentSpeed/acceleration)) {
+			intendedSpeed = 0;
+			
+			var hit:Collider = objectAhead();
+			
+			if (Vector3.Angle(transform.right, hit.transform.position-transform.position) < 90) {
 				//object to the right
 				//rotate left
 				intendedTurnSpeed = -maxTurnSpeed;
@@ -250,7 +289,7 @@ function Update () {
 		
 		} else if (!tankWithinDistance(separationDistance) && nearestTank()) {
 			//find other tank
-			Debug.Log("finding a companion", gameObject);
+			//Debug.Log("finding a companion", gameObject);
 			
 			var targetTank = nearestTank();
 			if (Vector3.Angle(transform.forward, targetTank.position-transform.position) <= 30) {
@@ -264,9 +303,9 @@ function Update () {
 				intendedTurnSpeed = -maxTurnSpeed;
 			}
 			
-		} else if ((target.position-transform.position).magnitude > responseDistance) {
+		} else if ((target.position-transform.position).magnitude > responseDistanceToRange * shellRange) {
 			//circle randomly
-			Debug.Log("wandering", gameObject);
+			//Debug.Log("wandering", gameObject);
 			
 			intendedSpeed = maxSpeed/2;
 			
@@ -276,7 +315,7 @@ function Update () {
 			}
 		} else {
 			//attack helicopter
-			Debug.Log("seek and destroy", gameObject);
+			//Debug.Log("seek and destroy", gameObject);
 			
 			if (directionVector.magnitude <= shellRange && Mathf.Atan(directionVector.y/horizontalVector.magnitude)*180/Mathf.PI <= maxTurretAngle) {
 				//helicopter is in range
