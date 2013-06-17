@@ -13,15 +13,24 @@ private var zone7 : Rect;
 private var zone8 : Rect;
 private var whichMenu : String = "main";
 
+//button textures
+var playText : Texture2D;
+var upgradeText : Texture2D;
+var rocketsText : Texture2D;
+var rocketDamageText : Texture2D;
+var bulletDamageText : Texture2D;
+var armorText : Texture2D;
+//var playText : Texture2D;
+
 function Start () {
-    zone1 = guiToZone(Rect(Screen.width/2-75,Screen.height/2-100,150,50));
-    zone2 = guiToZone(Rect(Screen.width/2-75,Screen.height/2-25,150,50));
-    zone3 = guiToZone(Rect(Screen.width/2-75,Screen.height/2+50,150,50));
-    zone4 = guiToZone(Rect(Screen.width/2-75,Screen.height/2-137.5,150,50));
-    zone5 = guiToZone(Rect(Screen.width/2-75,Screen.height/2-62.5,150,50));
-    zone6 = guiToZone(Rect(Screen.width/2-75,Screen.height/2+12.5,150,50));
-    zone7 = guiToZone(Rect(Screen.width/2-75,Screen.height/2+87.5,150,50));
-    zone8 = guiToZone(Rect(Screen.width/2-75,Screen.height/2+162.5,150,50));
+    zone1 = guiToZone(Rect(Screen.width/3,Screen.height/7,Screen.width/3,Screen.height/7+100));
+    zone2 = guiToZone(Rect(Screen.width/3,Screen.height*3/7,Screen.width/3,Screen.height/7+100));
+    zone3 = guiToZone(Rect(Screen.width/3,Screen.height*5/7,Screen.width/3,Screen.height/7+100));
+    zone4 = guiToZone(Rect(Screen.width/9,Screen.height/7,Screen.width/3,Screen.width/7));
+    zone5 = guiToZone(Rect(Screen.width*5/9,Screen.height/7,Screen.width/3,Screen.width/7));
+    zone6 = guiToZone(Rect(Screen.width/9,Screen.height*3/7,Screen.width/3,Screen.width/7));
+    zone7 = guiToZone(Rect(Screen.width*5/9,Screen.height*3/7,Screen.width/3,Screen.width/7));
+    zone8 = guiToZone(Rect(Screen.width/3,Screen.height*5/7,Screen.width/3,Screen.width/7));
 }
 
 function Update () {
@@ -38,13 +47,13 @@ function Update () {
 				}
 			} if (whichMenu =="upgrade") {
 				if (zone4.Contains(touch.position) && enoughMoney()) {
-					PlayerPrefs.SetInt("Rockets",PlayerPrefs.GetInt("Rockets",0));
+					PlayerPrefs.SetInt("Rockets",PlayerPrefs.GetInt("Rockets",0)+10);
 				} if (zone5.Contains(touch.position) && enoughMoney()) {
-					PlayerPrefs.SetInt("RocketDamage",PlayerPrefs.GetInt("RocketDamage",0));
+					PlayerPrefs.SetInt("RocketDamage",PlayerPrefs.GetInt("RocketDamage",1)+0.2);
 				} if (zone6.Contains(touch.position) && enoughMoney()) {
-					PlayerPrefs.SetInt("BulletDamage",PlayerPrefs.GetInt("BulletDamage",0));
+					PlayerPrefs.SetInt("BulletDamage",PlayerPrefs.GetInt("BulletDamage",1)+0.2);
 				} if (zone7.Contains(touch.position) && enoughMoney()) {
-					PlayerPrefs.SetInt("Armor",PlayerPrefs.GetInt("Armor",0));
+					PlayerPrefs.SetInt("Armor",PlayerPrefs.GetInt("Armor",100)+20);
 				} if (zone8.Contains(touch.position)) {
 					whichMenu = "main";
 				} 
@@ -55,15 +64,15 @@ function Update () {
 
 function OnGUI () {
     if (whichMenu == "main") {
-    	GUI.Button(Rect(Screen.width/2-75,Screen.height/2-100,150,50),"PLAY",mainMenuStyle);
-    	GUI.Button(Rect(Screen.width/2-75,Screen.height/2-25,150,50),"UPGRADE",mainMenuStyle);
-    	GUI.Button(Rect(Screen.width/2-75,Screen.height/2+50,150,50),"EXIT",mainMenuStyle);
+    	GUI.Label(Rect(Screen.width/3,Screen.height/7,Screen.width/3,Screen.height/7+100),playText);
+    	GUI.Label(Rect(Screen.width/3,Screen.height*3/7,Screen.width/3,Screen.height/7+100),upgradeText);
+    	GUI.Label(Rect(Screen.width/3,Screen.height*5/7,Screen.width/3,Screen.height/7+100),"EXIT",mainMenuStyle);
     } if (whichMenu == "upgrade") {
-        GUI.Button(Rect(Screen.width/2-75,Screen.height/2-137.5,150,50),"Max Rockets",upgradeMenuStyle);
-        GUI.Button(Rect(Screen.width/2-75,Screen.height/2-62.5,150,50),"Rocket Damage",upgradeMenuStyle);
-        GUI.Button(Rect(Screen.width/2-75,Screen.height/2+12.5,150,50),"Bullet Damage",upgradeMenuStyle);
-        GUI.Button(Rect(Screen.width/2-75,Screen.height/2+87.5,150,50),"Armor",upgradeMenuStyle);
-        GUI.Button(Rect(Screen.width/2-75,Screen.height/2+162.5,150,50),"Main Menu",upgradeMenuStyle);
+        GUI.Label(Rect(Screen.width/9,Screen.height/7,Screen.width/3,Screen.width/7),rocketsText);
+        GUI.Label(Rect(Screen.width*5/9,Screen.height/7,Screen.width/3,Screen.width/7),rocketDamageText);
+        GUI.Label(Rect(Screen.width/9,Screen.height*3/7,Screen.width/3,Screen.width/7),bulletDamageText);
+        GUI.Label(Rect(Screen.width*5/9,Screen.height*3/7,Screen.width/3,Screen.width/7),armorText);
+        GUI.Label(Rect(Screen.width/3,Screen.height*5/7,Screen.width/3,Screen.width/7),"Main Menu",upgradeMenuStyle);
     }
 }
 
