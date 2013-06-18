@@ -87,8 +87,8 @@ function guiToZone (guiRect : Rect) {
 }
 
 function enoughMoney () {
-    if (PlayerPrefs.GetInt("Money",0) >=5000) {
-        PlayerPrefs.SetInt("Money",PlayerPrefs.GetInt("Money",0)-5000);
+    if (PlayerPrefs.GetInt("Money",0) >=500) {
+        PlayerPrefs.SetInt("Money",PlayerPrefs.GetInt("Money",0)-500);
         PlayerPrefs.Save();
         return true;
     } else {

@@ -72,5 +72,9 @@ function OnGUI () {
 	GUI.Label(Rect(Screen.width/2-2*wPiece,Screen.height/2-2*hPiece,4*wPiece,4*hPiece),pauseText,pauseStyle);
 
 	//Rocket count
-	GUI.Label(Rect(wPiece/2,6*hPiece,wPiece,hPiece), "Rockets Left:  "+HeliShoot.rocketsLeft.ToString(),enemyStyle);
+	if (HeliShootTS.rocketsLeft) {
+		GUI.Label(Rect(wPiece/2,6*hPiece,wPiece,hPiece), "Rockets Left:  "+HeliShootTS.rocketsLeft.ToString(),enemyStyle);
+	} else {
+		GUI.Label(Rect(wPiece/2,6*hPiece,wPiece,hPiece), "Rockets Left:  "+HeliShoot.rocketsLeft.ToString(),enemyStyle);
+	}
 }
