@@ -2,7 +2,6 @@ Sugested Additions:
 
 Ally
 Instructions
-Objectives optional
 Time restraint
 
 
@@ -18,3 +17,9 @@ x Money (and this too)
 x Menu
 x Loop at end
 In-App Purchases
+
+Possible Objectives:
+kill certain amount of enemies in time limit
+protect ally vehicle
+kill specific enemy/set of enemies
+kill all enemies
