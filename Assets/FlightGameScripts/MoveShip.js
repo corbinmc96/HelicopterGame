@@ -15,6 +15,7 @@ var shipFront:Transform;
 var tipPoint:Transform;
 
 private var switchTime:float = 0;
+private var randomSpeed:float;
 
 private var speed:float;
 private var intendedSpeed:float;
@@ -23,21 +24,53 @@ private var intendedTurnSpeed:float;
 
 private var hit:RaycastHit;
 
-function objectAhead (distance:float) : boolean {
-	if (speed > 0) {
-		if (Physics.Raycast(tipPoint.position, transform.forward, hit, distance)) {
-			if (hit.transform.name != "Water" && hit.transform.name != "Terrain") {
-				return true;
-			}
+function objectAhead(distance:float) : Collider {
+	var hitColliders = Physics.OverlapSphere(transform.position, distance);
+	System.Array.Sort(hitColliders, function (a:Collider, b:Collider) (transform.position-a.transform.position).sqrMagnitude.CompareTo((transform.position-b.transform.position).sqrMagnitude));
+	for (var hitCollider:Collider in hitColliders) {
+		if (hitCollider.transform.root.tag != "Ground" && hitCollider.transform.root.tag != "Projectile" && hitCollider.transform.root!=transform && Vector3.Angle(transform.forward, hitCollider.transform.position-transform.position) < 45) {
+			return hitCollider;
 		}
 	}
-	return false;
+	
+	var hits = Physics.RaycastAll(transform.position, Quaternion.AngleAxis(45, Vector3.up)*transform.forward, distance);
+	for (hit in hits) {
+		if (hit.transform.root!=transform && hit.transform.root.tag!="Ground" && hit.transform.root.tag!="Projectile") {
+			return hit.collider;
+		}
+	}
+	
+	hits = Physics.RaycastAll(transform.position, Quaternion.AngleAxis(-45, Vector3.up)*transform.forward, distance);
+	for (hit in hits) {
+		if (hit.transform.root!=transform && hit.transform.root.tag!="Ground" && hit.transform.root.tag!="Projectile") {
+			return hit.collider;
+		}
+	}
+	return null;
 }
+
 
 function Update () {
 	intendedSpeed = maxSpeed;
 	
-	if (shipFront.position.x > upperXBound) {
+	if (objectAhead(2*(tipPoint.position-transform.position).magnitude + speed*(speed/acceleration))) {
+		//object in front of ship
+		//Debug.Log("object ahead", gameObject);
+		
+		var hitCollider:Collider = objectAhead(2*(tipPoint.position-transform.position).magnitude + speed*(speed/acceleration));
+		
+		if (Vector3.Angle(transform.right, hitCollider.transform.position-transform.position) < 90) {
+			//turn left
+			intendedTurnSpeed = -maxTurnSpeed;
+		} else {
+			//turn right
+			intendedTurnSpeed = maxTurnSpeed;
+		}
+		intendedSpeed = 0;
+		
+		switchTime = Time.time;
+		
+	} else if (shipFront.position.x > upperXBound) {
 		//front of ship is out of bounds
 		if (Vector3.Angle(transform.forward, Vector3(0,0,1)) <= 90) {
 			//turn left
@@ -101,29 +134,10 @@ function Update () {
 		
 		
 		
-	} else if (objectAhead(speed*3)) {
-		//object 3s or less in front of ship
-		if (Vector3.Angle(-hit.normal, transform.right) <= 90) {
-			//turn left
-			intendedTurnSpeed = -maxTurnSpeed;
-		} else {
-			//turn right
-			intendedTurnSpeed = maxTurnSpeed;
-		}
-		
-		if (objectAhead(speed)) {
-			//object 1s in front of ship
-			intendedSpeed = 0;
-		}
-		switchTime = Time.time;
-		
-		
-		
 	} else {
 		//proceed normally
 		if (Time.time >= switchTime) {
 			switchTime = Time.time + 5;
-			intendedSpeed = Random.Range(0, maxSpeed);
 			intendedTurnSpeed = Random.Range(-maxTurnSpeed, maxTurnSpeed);
 		}
 	}

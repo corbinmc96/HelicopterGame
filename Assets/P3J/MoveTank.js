@@ -158,8 +158,6 @@ function Update () {
 	horizontalVector.y = 0;
 	
 	var thisFrameWasRandom : boolean = false;
-
-	//Debug.Log(isGrounded());
 	
 	//determine direction of tank
 	if (isGrounded()) {
@@ -178,6 +176,7 @@ function Update () {
 				//turn left
 				intendedTurnSpeed = -maxTurnSpeed;
 			}
+			intendedSpeed = 0;
 			
 		} else if (Time.time-lastWaterAhead < 4) {
 			//turning away from water
@@ -276,9 +275,9 @@ function Update () {
 			
 			intendedSpeed = 0;
 			
-			var hit:Collider = objectAhead();
+			var hitCollider:Collider = objectAhead();
 			
-			if (Vector3.Angle(transform.right, hit.transform.position-transform.position) < 90) {
+			if (Vector3.Angle(transform.right, hitCollider.transform.position-transform.position) < 90) {
 				//object to the right
 				//rotate left
 				intendedTurnSpeed = -maxTurnSpeed;

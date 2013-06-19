@@ -13,9 +13,11 @@ function Start () {
 }
 
 function Update () {
-	LookSpeed= initialLookSpeed*mainCamera.camera.fieldOfView/60;
+	LookSpeed = initialLookSpeed*mainCamera.camera.fieldOfView/60;
 	var noRiseVector = transform.forward;
 	noRiseVector.y = 0;
+	noRiseVector = noRiseVector.normalized;
+	
 	transform.Translate(Vector3.up * TS.elevate * ElevationSpeed * Time.deltaTime, Space.World);
 	transform.Translate(Vector3.right * TS.leftX * MoveSpeed * Time.deltaTime);
 	transform.Translate(noRiseVector * TS.leftY * MoveSpeed * Time.deltaTime, Space.World);
@@ -34,14 +36,14 @@ function Update () {
 	if (transform.position.z > 8000) {
 		transform.position.z = 8000;
 	}
-	if (transform.position.z < 0) {
-		transform.position.z = 0;
+	if (transform.position.z < -500) {
+		transform.position.z = -500;
 	}
 	if (transform.position.x > 8000) {
 		transform.position.x = 8000;
 	}
-	if (transform.position.x < 0) {
-		transform.position.x = 0;
+	if (transform.position.x < -700) {
+		transform.position.x = -700;
 	}
 	if (Input.GetAxis("Square") == 1 || Input.GetAxis("L3") == 1){
 		transform.eulerAngles.x = 0;

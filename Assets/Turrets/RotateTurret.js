@@ -7,8 +7,9 @@ private var target : GameObject;
 private var firePoint : Transform;
 private var barrelName:String = "Barrel";
 private var bulletSpeed:float;
-private var HElevationSpeed:float;
-private var HMoveSpeed:float;
+//private var HElevationSpeed:float;
+//private var HMoveSpeed:float;
+private var lastTargetPosition:Vector3;
 
 function Start () {
 	if (!transform.Find(barrelName)) {
@@ -17,8 +18,9 @@ function Start () {
 	firePoint = transform.Find(barrelName).Find("FirePoint");
 	target = GameObject.Find(targetName + "/Target Point");
 	bulletSpeed = transform.Find(barrelName).gameObject.GetComponent(RotateBarrel).bulletObject.GetComponent(Ball).speed;
-	HElevationSpeed = GameObject.Find(targetName).GetComponent(Movement).ElevationSpeed;
-	HMoveSpeed = GameObject.Find(targetName).GetComponent(Movement).MoveSpeed;
+	//HElevationSpeed = GameObject.Find(targetName).GetComponent(Movement).ElevationSpeed;
+	//HMoveSpeed = GameObject.Find(targetName).GetComponent(Movement).MoveSpeed;
+	lastTargetPosition = GameObject.Find(targetName).transform.position;
 }
 
 function Update () {
@@ -29,7 +31,9 @@ function Update () {
 	var H:Vector3 = target.transform.position;
 	var d:float = (T - firePoint.position).magnitude;
 	var s:float = bulletSpeed;
-	var v:Vector3 = Vector3.up*Input.GetAxis("Triggers")*HElevationSpeed + target.transform.right*Input.GetAxis("Left X")*HMoveSpeed + targetForwardNoRise*Input.GetAxis("Left Y")*HMoveSpeed;
+	//var v:Vector3 = Vector3.up*Input.GetAxis("Triggers")*HElevationSpeed + target.transform.right*Input.GetAxis("Left X")*HMoveSpeed + targetForwardNoRise*Input.GetAxis("Left Y")*HMoveSpeed;
+	var v:Vector3 = 1/Time.deltaTime * (GameObject.Find(targetName).transform.position-lastTargetPosition);
+	lastTargetPosition = GameObject.Find(targetName).transform.position;
 	
 	//s checks!
 	//v checks!
