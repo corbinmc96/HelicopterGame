@@ -15,8 +15,8 @@ function Start () {
 function Update () {
 	if (deadTime) {
 		transform.Translate(-10 * Vector3.up * Time.deltaTime, Space.World);
-		transform.Rotate(transform.up, 5 * Time.deltaTime);
-		transform.Rotate(transform.right, -6 * Time.deltaTime * Mathf.Pow(0.9, Time.time - deadTime));
+		transform.Rotate(Vector3.up, 5 * Time.deltaTime);
+		transform.Rotate(Vector3.right, -5 * Time.deltaTime * Mathf.Pow(0.9, Time.time - deadTime));
 	} else if (health <= 0) {
 		deadTime = Time.time;
 		Dead();
@@ -35,10 +35,8 @@ function Dead () {
 
 	yield WaitForSeconds(timeDelays[length]);
 	
-	if (transform.Find("TurretBase")) {
-		transform.Find("TurretBase").parent = null;
-	}
 	Destroy(gameObject);
 	GameObject.Find("ControlHub").GetComponent(GUIHandler).enemiesKilled++;
 	GameObject.Find("ControlHub").GetComponent(GUIHandler).enemiesLeft--;
+
 }

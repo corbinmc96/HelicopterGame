@@ -2,7 +2,7 @@
 
 function OnGUI () {
 	if (Event.current.isKey) {
-		if (Application.loadedLevelName == "Main"){
+		if (Application.loadedLevelName == "Main" || Application.loadedLevelName == "SurvivalMode"){
 			GameObject.Find("ControlHub").GetComponent(TS).enabled = false;
 			GameObject.Find("APACHE_L").GetComponent(HeliShootTS).enabled = false;
 			GameObject.Find("APACHE_L").GetComponent(MovementTS).enabled = false;
