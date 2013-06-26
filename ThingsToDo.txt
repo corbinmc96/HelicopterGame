@@ -2,14 +2,11 @@ Sugested Additions:
 
 Ally
 Instructions
-Time restraint
-
 
 Aaron is working on/will work on: (If there is something else you want me to do, put it on this list)
 Enemy heli
 x More enemies
 x More clustering
-
 
 Corbin:
 x Upgrades (reserved by corbin)
@@ -19,7 +16,6 @@ x Loop at end
 In-App Purchases
 
 Possible Objectives:
-kill certain amount of enemies in time limit
+kill as many enemies as possible in time limit
 protect ally vehicle
-kill specific enemy/set of enemies
-kill all enemies
+survive for as long as possible
